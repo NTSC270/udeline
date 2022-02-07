@@ -24,7 +24,7 @@ class MyClient(discord.Client):
             return
         if message.author.bot:
             return
-        if "<@!{client.user.id}>" in message.content or "<@{client.user.id}>" in message.content:
+        if client.user in message.mentions:
             command = "help"
             await commands.run_command(command, discord, message, [], client, [])
         if helper.prefix.check(message.content, client)[0]:

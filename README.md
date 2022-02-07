@@ -1,4 +1,3 @@
-[udeline logo](https://cdn.discordapp.com/emojis/937436511899627620.webp?size=96&quality=lossless)
 # udeline
 discord bot made in **discord.py**, which's main features include:
 > - general use

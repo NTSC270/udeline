@@ -38,7 +38,7 @@ async def run_command(discord, message, args, client, opt):
                 image.append(x)
             all_cmds.append(x)
 
-    embed=discord.Embed(description="**prefixes: `"+", ".join(helper.prefix)+"`**", color=0x00ccff)
+    embed=discord.Embed(description="**prefixes: `"+", ".join(helper.prefixes[client.user.name])+"`**", color=0x00ccff)
     embed.set_author(name="udeline help",icon_url="https://media.discordapp.net/attachments/913898937532940371/937629996476956682/udeline.png")
     embed.add_field(name="general <:udeline:937436511899627620>", value="```m\n"+", ".join(general)+"```")
     embed.add_field(name="utility <:udeline:937436511899627620>", value="```m\n"+", ".join(utility)+"```")

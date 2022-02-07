@@ -1,15 +1,10 @@
-prefix = ['udel>', 'u>']
+import json
 
-def has_pfix(msg):
-    for x in prefix:
-        if msg.startswith(x):
-            return True
-
-def pfix_sw(msg):
-    for x in prefix:
-        if msg.startswith(x):
-            return len(x)
-def used_pfix(msg):
-    for x in prefix:
-        if msg.startswith(x):
-            return x
+prefixes = {"udeline": ["u>", "udel>"], "udevline": ["u>>", "udel>>"]}
+class prefix:
+    def check(msg, client):
+        for x in prefixes[client.user.name]:
+            if msg.startswith(x):
+                return [True, len(x), x]
+            else:
+                return [False, 0, ""]

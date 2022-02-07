@@ -11,4 +11,5 @@ discord bot made in **discord.py**, which's main features include:
 > - emoji
 > - psutil
 > - pyfiglet
+
 would appr a tiny credit when you steal the code

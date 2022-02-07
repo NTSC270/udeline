@@ -1,7 +1,13 @@
 import discord, commands, re, helpers.helper as helper, optionparse
 import re
 import time
-import io
+import os
+import sys
+from dotenv import load_dotenv
+sys.path.append("replit-keep-alive/src")
+from replit_keep_alive import keep_alive
+load_dotenv()
+
 
 class MyClient(discord.Client):
     
@@ -36,4 +42,6 @@ class MyClient(discord.Client):
             optionparse.parse_options(" ".join(args))
 
 client = MyClient()
-client.run(open('config/private/secrets.txt').readlines()[0])
+client.run(os.getenv("TOKEN"))
+if client.user.name == "udeline":
+    keep_alive()

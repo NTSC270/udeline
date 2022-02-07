@@ -1,0 +1,19 @@
+import random
+import helpers.markup_ansi
+import requests, json, commands
+
+async def run_command(discord, message, args, client, opt):
+    if len(message.attachments) < 1:
+        await message.reply("i need an image attachment to do that")
+        return await commands.run_command("help", discord, message, ["u>help", "saturate"], client, [])
+
+    r = requests.post(
+        "https://api.deepai.org/api/waifu2x",
+        data={
+            'image': message.attachments[0].url,
+        },
+        headers={'api-key': '23e20387-716c-41e4-9773-2a653e726b32'}
+    )
+    print(json.loads(r.text))
+    await message.reply(json.loads(r.text)["output_url"])
+

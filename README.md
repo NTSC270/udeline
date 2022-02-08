@@ -1,6 +1,4 @@
-![udeline logo](https://cdn.discordapp.com/emojis/937436511899627620.png "udeline logo")
-
-# udeline
+#  <img src="https://cdn.discordapp.com/emojis/937436511899627620.png" width="128"> udeline
 
 discord bot made in **discord.py**, which's main features include:
 > - general use

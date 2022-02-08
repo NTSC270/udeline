@@ -43,7 +43,7 @@ class MyClient(discord.Client):
             args.pop(0)
             optionparse.parse_options(" ".join(args))
 
-if os.getenv("TOKEN") == "True":
+if os.getenv("REPLIT") == "True":
     keep_alive()
 client = MyClient()
 client.run(os.getenv("TOKEN"))

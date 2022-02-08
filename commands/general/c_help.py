@@ -39,12 +39,12 @@ async def run_command(discord, message, args, client, opt):
             all_cmds.append(x)
 
     embed=discord.Embed(description="**prefixes: `"+", ".join(helper.prefixes[client.user.name])+"`**", color=0x00ccff)
-    embed.set_author(name="udeline help",icon_url="https://media.discordapp.net/attachments/913898937532940371/937629996476956682/udeline.png")
-    embed.add_field(name="general <:udeline:937436511899627620>", value="```m\n"+", ".join(general)+"```")
-    embed.add_field(name="utility <:udeline:937436511899627620>", value="```m\n"+", ".join(utility)+"```")
-    embed.add_field(name="fun <:udeline:937436511899627620>", value="```m\n"+", ".join(fun)+"```")
-    embed.add_field(name="other <:udeline:937436511899627620>", value="```m\n"+", ".join(other)+"```")
-    embed.add_field(name="image <:udeline:937436511899627620>", value="```m\n"+", ".join(image)+"```")
+    embed.set_author(name=f"{client.user.name} help",icon_url=f"{client.user.avatar_url}")
+    embed.add_field(name=f"general {helper.udel_emoji[client.user.name]}", value="```m\n"+", ".join(general)+"```")
+    embed.add_field(name=f"utility {helper.udel_emoji[client.user.name]}", value="```m\n"+", ".join(utility)+"```")
+    embed.add_field(name=f"fun {helper.udel_emoji[client.user.name]}", value="```m\n"+", ".join(fun)+"```")
+    embed.add_field(name=f"other {helper.udel_emoji[client.user.name]}", value="```m\n"+", ".join(other)+"```")
+    embed.add_field(name=f"image {helper.udel_emoji[client.user.name]}", value="```m\n"+", ".join(image)+"```")
     
     funfacts = open('misc/fun_facts.txt').readlines()
     now = datetime.datetime.today()

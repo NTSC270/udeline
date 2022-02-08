@@ -43,7 +43,6 @@ class MyClient(discord.Client):
             args.pop(0)
             optionparse.parse_options(" ".join(args))
 
+#keep_alive()
 client = MyClient()
 client.run(os.getenv("TOKEN"))
-if client.user.name == "udeline":
-    keep_alive()

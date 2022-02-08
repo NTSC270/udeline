@@ -1,7 +1,7 @@
 import sys
 sys.path.append('commands')
 import fun.c_fnaf as c_fnaf, general.c_first as c_first, general.c_help as c_help, other.c_image as c_image, utility.c_copy as c_copy, fun.c_doodlebob as c_doodlebob, other.c_sort as c_sort, c_test, c_exec, general.c_ascii as c_ascii, utility.c_emojipack as c_emojipack, general.c_ping as c_ping, utility.c_purge as c_purge, utility.c_emoji as c_emoji, image.c_saturate as c_saturate, image.c_jpeg as c_jpeg
-import image.c_grayscale as c_grayscale, image.c_ifunny as c_ifunny, fun.c_play as c_play, general.c_web as c_web
+import image.c_grayscale as c_grayscale, image.c_ifunny as c_ifunny, fun.c_play as c_play
 import db, json
 from os.path import exists
 
@@ -46,8 +46,6 @@ async def run_command(command, discord, message, args, client, opt):
             await c_ifunny.run_command(discord, message, args, client, opt)
     if command == "play":
             await c_play.run_command(discord, message, args, client, opt)
-    if command == "web":
-            await c_web.run_command(discord, message, args, client, opt)
 
     activity_measure(message)
 

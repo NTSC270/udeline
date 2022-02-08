@@ -16,8 +16,8 @@ discord bot made in **discord.py**, which's main features include:
 > - pyfiglet
 
 # invite
-bot looks interesting? add it to your server by clicking this button
-![invite udeline](https://pcstrike.com/wp-content/uploads/2021/05/How-To-Invite-People-To-Discord.png "udeline logo")
+bot looks interesting? add it to your server by clicking this link
+https://discord.com/oauth2/authorize?client_id=913901320686153728&scope=bot&permissions=8
 
 
 

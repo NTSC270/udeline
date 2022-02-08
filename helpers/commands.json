@@ -110,5 +110,12 @@
         "none",
         "ping",
         "general"
+    ],
+    "qr": [
+        "generates a qr code",
+        "qr <text>",
+        "none",
+        "qr coolingtool",
+        "image"
     ]
 }

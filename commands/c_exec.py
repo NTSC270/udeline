@@ -6,7 +6,11 @@ textwrap.tabsize = 4
 async def run_command(discord, message, args, client, opt):
 
 
-    code = message.content.replace("u>"+"exec"+" ", "")
+    if message.content.startswith("u>exec"):
+        code = message.content.replace("u>"+"exec"+" ", "")
+    else:
+        code = message.content.replace("u>>"+"exec"+" ", "")
+
     if code.startswith("```py"):
         code = code[5:]
         code = code[:len(code) - 3]

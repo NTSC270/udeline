@@ -30,7 +30,8 @@ async def run_command(discord, message, args, client, opt):
             obj = await local_vars["func"]()
             result = f"{stdout.getvalue()}\n-- {obj}\n"
 
-            await message.reply("```py\n"+result[0:1990]+"```")
+            if(obj != None):
+                await message.reply("```py\n"+result[0:1990]+"```")
             # f = io.BytesIO(bytes(result, "utf8"))
             # await message.reply(file=discord.File(f, "output.txt"))
 

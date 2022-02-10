@@ -45,5 +45,6 @@ class MyClient(discord.Client):
 
 if os.getenv("REPLIT") == "True":
     keep_alive()
-client = MyClient()
+intents = discord.Intents.all()
+client = MyClient(intents=intents)
 client.run(os.getenv("TOKEN"))

@@ -1,0 +1,6 @@
+py-cord
+pytube
+emoji-data-python
+emoji
+psutil
+pyfiglet

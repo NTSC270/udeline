@@ -1,12 +1,12 @@
 #  <img src="https://cdn.discordapp.com/emojis/937436511899627620.png" width="128"> udeline
 
-discord bot made in **discord.py**, which's main features include:
+discord bot made in **py-cord**, which's main features include:
 > - general use
 > - server moderation
 > - fun commands
 > - other **cool** commands
 ## dependencies
-> - discord.py
+> - py-cord
 > - pytube
 > - emoji-data-python
 > - emoji

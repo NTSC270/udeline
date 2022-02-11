@@ -1,4 +1,4 @@
-import discord, commands, re, helpers.helper as helper, optionparse
+import discord, commands, re, helpers.helper as helper, option_parse
 import re
 import time
 import os
@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 sys.path.append("replit-keep-alive/src")
 from replit_keep_alive import keep_alive
 load_dotenv()
-
 
 class MyClient(discord.Client):
     
@@ -31,7 +30,7 @@ class MyClient(discord.Client):
             await commands.run_command(command, discord, message, [], client, [])
         if helper.prefix.check(message.content, client)[0]:
 
-            opt = optionparse.parse_options(message.content)
+            opt = option_parse.parse_options(message.content)
             for x in range(len(opt)):
                 if '--'+opt[x] in message.content:
                     message.content = message.content.replace('--'+opt[x],"")
@@ -41,7 +40,7 @@ class MyClient(discord.Client):
             command = args[0][prefix_len:]
             await commands.run_command(command, discord, message, args, client, opt)
             args.pop(0)
-            optionparse.parse_options(" ".join(args))
+            option_parse.parse_options(" ".join(args))
 
 if os.getenv("REPLIT") == "True":
     keep_alive()

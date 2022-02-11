@@ -1,7 +1,7 @@
 import sys
 sys.path.append('helpers')
 import helper, db, markup_ansi
-import datetime
+import datetime, markup_ansi
 
 async def run_command(discord, message, args, client, opt):
     if len(args) > 1:
@@ -27,24 +27,24 @@ async def run_command(discord, message, args, client, opt):
     for x in commands_descriptive:
         if len(commands_descriptive[x]) > 4:
             if commands_descriptive[x][4] == "util":
-                utility.append(x)
+                utility.append(markup_ansi.getc("blue", "1") + x + markup_ansi.getc("clear", "0")  if commands_descriptive[x][5] == "guildonly" else x)
             if commands_descriptive[x][4] == "fun":
-                fun.append(x)
+                fun.append(markup_ansi.getc("blue", "1") + x + markup_ansi.getc("clear", "0")  if commands_descriptive[x][5] == "guildonly" else x)
             if commands_descriptive[x][4] == "general":
-                general.append(x)
+                general.append(markup_ansi.getc("blue", "1") + x + markup_ansi.getc("clear", "0")  if commands_descriptive[x][5] == "guildonly" else x)
             if commands_descriptive[x][4] == "other":
-                other.append(x)
+                other.append(markup_ansi.getc("blue", "1") + x + markup_ansi.getc("clear", "0")  if commands_descriptive[x][5] == "guildonly" else x)
             if commands_descriptive[x][4] == "image":
-                image.append(x)
+                image.append(markup_ansi.getc("blue", "1") + x + markup_ansi.getc("clear", "0")  if commands_descriptive[x][5] == "guildonly" else x)
             all_cmds.append(x)
 
-    embed=discord.Embed(description="**prefixes: `"+", ".join(helper.prefixes[client.user.name])+"`**", color=0x00ccff)
-    embed.set_author(name=f"{client.user.name} help",icon_url=f"{client.user.avatar_url}")
-    embed.add_field(name=f"general {helper.udel_emoji[client.user.name]}", value="```m\n"+", ".join(general)+"```")
-    embed.add_field(name=f"utility {helper.udel_emoji[client.user.name]}", value="```m\n"+", ".join(utility)+"```")
-    embed.add_field(name=f"fun {helper.udel_emoji[client.user.name]}", value="```m\n"+", ".join(fun)+"```")
-    embed.add_field(name=f"other {helper.udel_emoji[client.user.name]}", value="```m\n"+", ".join(other)+"```")
-    embed.add_field(name=f"image {helper.udel_emoji[client.user.name]}", value="```m\n"+", ".join(image)+"```")
+    embed=discord.Embed(description="**prefixes: `"+", ".join(helper.prefixes[client.user.name])+"`**\nblue commands may only be available in guilds, or work diffirently outside guilds", color=0x00ccff)
+    embed.set_author(name=f"{client.user.name} help",icon_url=f"{client.user.avatar.url}")
+    embed.add_field(name=f"general {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(general)+"```")
+    embed.add_field(name=f"utility {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(utility)+"```")
+    embed.add_field(name=f"fun {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(fun)+"```")
+    embed.add_field(name=f"other {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(other)+"```")
+    embed.add_field(name=f"image {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(image)+"```")
     
     funfacts = open('misc/fun_facts.txt').readlines()
     now = datetime.datetime.today()

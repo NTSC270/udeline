@@ -1,10 +1,11 @@
 import textwrap, contextlib, io
 from traceback import format_exception
 textwrap.tabsize = 4
+import datetime
+from syntax_highlight import highlighting as style
 
 
 async def run_command(discord, message, args, client, opt):
-
 
     if message.content.startswith("u>exec"):
         code = message.content.replace("u>"+"exec"+" ", "")
@@ -20,7 +21,8 @@ async def run_command(discord, message, args, client, opt):
         local_vars = {
             "discord": discord,
             "client": client,
-            "message": message
+            "message": message,
+            "args": args
         }
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
@@ -28,12 +30,13 @@ async def run_command(discord, message, args, client, opt):
                 f"async def func():\n{code}", local_vars
             )
             obj = await local_vars["func"]()
-            result = f"{stdout.getvalue()}\n-- {obj}\n"
+            result = f"{stdout.getvalue()}\n{style(str(obj))}"
 
             if(obj != None):
-                await message.reply("```py\n"+result[0:1990]+"```")
-            # f = io.BytesIO(bytes(result, "utf8"))
-            # await message.reply(file=discord.File(f, "output.txt"))
+                f = io.BytesIO(bytes(result, "utf8"))
+                await message.reply(file=discord.File(f, "output.ansi"))
 
     except Exception as e:
-        await message.reply("```m\n"+("".join(format_exception(e, e, e.__traceback__)))[0:1992]+"```")
+        exception = style("".join(format_exception(e, e, e.__traceback__)))
+        f = io.BytesIO(bytes(exception, "utf8"))
+        await message.reply(file=discord.File(f, "output.ansi"))

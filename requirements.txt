@@ -4,3 +4,4 @@ emoji-data-python
 emoji
 psutil
 pyfiglet
+pygments

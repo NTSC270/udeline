@@ -4,118 +4,143 @@
         "ascii <text>",
         "--font, --color",
         "ascii moo --font=block --color=green",
-        "general"
+        "general",
+        ""
     ],
     "doodlebob": [
         "makes provided text sound as if doodlebob said it",
         "doodlebob <text>",
         "none",
         "doodlebob you doodle, me spongebob",
-        "fun"
+        "fun",
+        ""
     ],
     "emojipack": [
         "downloads and packs all emojis from server in a zip file you can download",
         "emojipack",
         "none",
         "emojipack",
-        "util"
+        "util",
+        "guildonly"
     ],
     "first": [
         "shows the first message in the current channel",
         "first",
         "none",
         "first",
-        "general"
+        "general",
+        ""
     ],
     "fnaf": [
         "generates a random fnaf game name, the possibilities are near endless",
         "fnaf <seed>(optional)",
         "none",
         "fnaf",
-        "fun"
+        "fun",
+        ""
     ],
     "help": [
         "sends help message for udeline",
         "help <command>(optional)",
         "none",
         "help ascii",
-        "general"
+        "general",
+        ""
     ],
     "image": [
         "sends an ai-generated image based on input",
         "image <text>",
         "none",
         "image mario",
-        "other"
+        "other",
+        ""
     ],
     "copy": [
         "sends raw content of a message",
         "copy <message_id>",
         "none",
         "copy 937612398926377020",
-        "util"
+        "util",
+        ""
     ],
     "sort": [
         "sorts words from input alphabetically",
         "sort <text>",
         "none",
         "sort windows 98 is a nice computer machine",
-        "other"
+        "other",
+        ""
     ],
     "purge": [
         "mass remove messages, useful for spam or changing history",
         "purge <number_of_messages>",
         "--member",
         "purge 99 --member=484568604382199808",
-        "util"
+        "util",
+        "guildonly"
     ],
     "emoji": [
         "sends picture of emoji, useful for thumbnails and stuff",
         "emoji <emoji>",
         "--brand",
         "emoji 🙂",
-        "util"
+        "util",
+        ""
     ],
     "saturate": [
         "saturates an image\n**`(requires image attachment)`**",
         "saturate",
         "--power",
         "saturate --power=10",
-        "image"
+        "image",
+        ""
     ],
     "jpeg": [
         "makes image look all compressed and jpeg-y\n**`(requires image attachment)`**",
         "jpeg",
         "--quality",
         "jpeg --quality=0",
-        "image"
+        "image",
+        ""
     ],
     "ifunny": [
         "adds ifunny.co watermark to image\n**`(requires image attachment)`**",
         "ifunny",
         "none",
         "ifunny",
-        "image"
+        "image",
+        ""
     ],
     "grayscale": [
         "makes image colorless\n**`(requires image attachment)`**",
         "grayscale",
         "none",
         "grayscale",
-        "image"
+        "image",
+        ""
     ],
     "ping": [
         "shows bot info and statistics",
         "ping",
         "none",
         "ping",
-        "general"
+        "general",
+        ""
     ],
     "qr": [
         "generates a qr code",
         "qr <text>",
         "none",
         "qr coolingtool",
-        "image"
+        "image",
+        ""
+    ],
+    "user": [
+        "gets user information",
+        "user <user_id>",
+        "none",
+        "user 839035980371460107",
+        "general",
+        "guildonly"
     ]
 }

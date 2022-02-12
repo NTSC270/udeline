@@ -1,8 +1,12 @@
 import random
+from sqlite3 import Date
 import helpers.markup_ansi
 import helpers.db as db
+import datetime
 
 async def run_command(discord, message, args, client, opt):
+
+    random.seed(message.id)
 
     if(len(args) > 1):
         seed_fnaf = ""

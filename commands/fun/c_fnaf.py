@@ -43,6 +43,7 @@ async def run_command(discord, message, args, client, opt):
         if random.random() > 0.8:
             pick = round(random.random() * len(number))
             name += number[pick % len(number)] + joiner
+    return await message.reply(name)
 
     if pick == 1:
         pick = round(random.random() * len(nighttype))
@@ -55,12 +56,16 @@ async def run_command(discord, message, args, client, opt):
             pick = round(random.random() * len(number))
             name += number[pick % len(number)] + joiner
 
+    return await message.reply(name)
+
     if pick == 2:
         pick = round(random.random() * len(s))
         name += s[pick % len(s)] + joiner
         if random.random() > 0.8:
             pick = round(random.random() * len(number))
             name += number[pick % len(number)] + joiner
+
+    return await message.reply(name)
 
     if pick == 3:
         pick = round(random.random() * len(s))
@@ -70,6 +75,8 @@ async def run_command(discord, message, args, client, opt):
         if random.random() > 0.8:
             pick = round(random.random() * len(number))
             name += number[pick % len(number)] + joiner
+
+    return await message.reply(name)
     
     if pick == 4:
         name += "The"+joiner+ "Return"+joiner+ "to"+joiner
@@ -79,6 +86,6 @@ async def run_command(discord, message, args, client, opt):
             pick = round(random.random() * len(number))
             name += number[pick % len(number)] + joiner
 
-    await message.reply(name)
+    return await message.reply(name)
 
     #await message.channel.send("```ansi\n"+helpers.markup_ansi.getc("clear", "0")+helpers.markup_ansi.getc(poscol[round(random.random() * len(poscol)) % len(poscol)], "1")+name+"```")

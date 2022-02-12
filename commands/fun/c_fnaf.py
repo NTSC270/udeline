@@ -1,5 +1,6 @@
 import random
 import helpers.markup_ansi
+import helpers.db as db
 
 async def run_command(discord, message, args, client, opt):
 
@@ -30,6 +31,20 @@ async def run_command(discord, message, args, client, opt):
     joiner = " "
     poscol = ["red", "green", "yellow", "blue", "white", "dark_fill"]
 
+    async def complete_name_gen(name):
+
+        fnafnames = db.dbget("database/fnaf.json")
+
+        fnafnames.setdefault(name, 0)
+        
+        fnafnames[name] = fnafnames[name] + 1
+        db.dbwrite(fnafnames, "database/fnaf.json")
+
+        if "Scary Nights at Sebi TV's 2" in name:
+            name = f"**{name}**"
+
+        await message.reply(f"{name} ({fnafnames[name]})")
+
     pick = round(random.random() * len(g)) % len(g)
     if pick == 0:
         pick = round(random.random() * len(f))
@@ -43,7 +58,7 @@ async def run_command(discord, message, args, client, opt):
         if random.random() > 0.8:
             pick = round(random.random() * len(number))
             name += number[pick % len(number)] + joiner
-        return await message.reply(name)
+        return await complete_name_gen(name)
 
     if pick == 1:
         pick = round(random.random() * len(nighttype))
@@ -56,7 +71,7 @@ async def run_command(discord, message, args, client, opt):
             pick = round(random.random() * len(number))
             name += number[pick % len(number)] + joiner
 
-        return await message.reply(name)
+        return await complete_name_gen(name)
 
     if pick == 2:
         pick = round(random.random() * len(s))
@@ -65,7 +80,7 @@ async def run_command(discord, message, args, client, opt):
             pick = round(random.random() * len(number))
             name += number[pick % len(number)] + joiner
 
-        return await message.reply(name)
+        return await complete_name_gen(name)
 
     if pick == 3:
         pick = round(random.random() * len(s))
@@ -76,7 +91,7 @@ async def run_command(discord, message, args, client, opt):
             pick = round(random.random() * len(number))
             name += number[pick % len(number)] + joiner
 
-        return await message.reply(name)
+        return await complete_name_gen(name)
     
     if pick == 4:
         name += "The"+joiner+ "Return"+joiner+ "to"+joiner
@@ -86,6 +101,8 @@ async def run_command(discord, message, args, client, opt):
             pick = round(random.random() * len(number))
             name += number[pick % len(number)] + joiner
 
-        return await message.reply(name)
+        return await complete_name_gen(name)
+
+
 
     #await message.channel.send("```ansi\n"+helpers.markup_ansi.getc("clear", "0")+helpers.markup_ansi.getc(poscol[round(random.random() * len(poscol)) % len(poscol)], "1")+name+"```")

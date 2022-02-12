@@ -27,6 +27,19 @@ async def run_command(discord, message, args, client, opt):
         "red": "<:red:941063007230885898>",
         "pink": "<:pink:941063007318970429>",
     }
+    default_avatar_index = [
+        "blurple",
+        "grey",
+        "green",
+        "orange",
+        "red",
+        "pink"
+    ]
+
+    def split_def_url(url):
+        parts = url.split("/")
+        parts = parts[len(parts)-1].split(".")
+        return parts[0]
 
     badges_dict = {
         "nitro": "<:Nitro:941286823957774357>",
@@ -64,13 +77,14 @@ async def run_command(discord, message, args, client, opt):
         nick = f"({user.nick})" if user.nick is not None else ""
         embed.set_author(name=f"{user.name}#{user.discriminator} {nick}", icon_url=activity_dict[str(user.raw_status)])
 
-    embed.set_thumbnail(url=user.avatar_url)
+    embed.set_thumbnail(url=user.display_avatar.url)
     embed.add_field(name="joined discord:", value=f"<t:{int(user.created_at.timestamp())}:F>")
 
     if guild:
         embed.add_field(name="joined server:", value=f"<t:{int(user.joined_at.timestamp())}:F>")
 
-    embed.add_field(name="default avatar color:", value=f"{user.default_avatar} {emoji_dict[str(user.default_avatar)]}")
+    def_avatar_name = split_def_url(user.default_avatar.url)
+    embed.add_field(name="default avatar color:", value=f"{default_avatar_index[int(def_avatar_name)]} {str(emoji_dict[default_avatar_index[int(def_avatar_name)]])}")
 
     if guild:
         roles_list = []
@@ -78,9 +92,12 @@ async def run_command(discord, message, args, client, opt):
             roles_list.append(f"<@&{x.id}>")
         roles_list.pop(0)
         embed.add_field(name="roles:", value = "@everyone" + "".join(roles_list))
+        embed.add_field(name="time out:", value = f"lasts for {user.communication_disabled_until.replace(tzinfo=None) - datetime.datetime.now()}" if user.timed_out else "no", inline=False) if guild else None
         
     out = badge_parse.parse(user)
     icon = []
+    if user.avatar.is_animated():
+        icon.append(badges_dict["nitro"])
     for x in out:
         icon.append(badges_dict[x])
 

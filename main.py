@@ -26,6 +26,9 @@ class MyClient(discord.Client):
         if message.author.bot:
             return
         if client.user in message.mentions:
+            if message.reference:
+                if message.content != "help":
+                    return
             command = "help"
             await commands.run_command(command, discord, message, [], client, [])
         if helper.prefix.check(message.content, client)[0]:

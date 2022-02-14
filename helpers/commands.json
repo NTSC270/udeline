@@ -1,6 +1,6 @@
 {
     "ascii": [
-        "generates ascii text using figlet\navailable fonts can be found here https://pastebin.com/SdPVt65W",
+        "generates ascii text using figlet\navailable fonts can be found here https://pastebin.com/SdPVt65W ",
         "ascii <text>",
         "--font, --color",
         "ascii moo --font=block --color=green",

@@ -3,7 +3,7 @@ import helpers.db as db
 
 async def run_command(discord, message, args, client, opt):
 
-    g = ["FNAF*", "UCN*", "NAME*", "SOMEONE'S_SOMETHING*", "RETURN*", "OGFNAF*"]
+    g = ["FNAF*", "UCN*", "NAME*", "SOMEONE'S_SOMETHING*", "RETURN*", "SNAST*"]
 
     f = ["Five", "Scary", "Those", "Nine", "One", "Some", "1 Minute", "Horror"]
     n = ["Nights", "Nights", "Days", "Minutes", "Weeks"]
@@ -29,10 +29,12 @@ async def run_command(discord, message, args, client, opt):
         fnafnames[name] = fnafnames[name] + 1
         db.dbwrite(fnafnames, "database/fnaf.json")
 
-        if "Scary Nights at Sebi TV's 2" in name.strip():
+        name.strip()
+
+        if "Scary Nights at Sebi TV's 2" in name:
             name = f"**{name}**"
 
-        await message.reply(f"{name.strip()} ({fnafnames[name]})")
+        await message.reply(f"{name} ({fnafnames[name]})")
 
     pick = secrets.choice(g)
     if pick == "FNAF*":
@@ -84,8 +86,8 @@ async def run_command(discord, message, args, client, opt):
             if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 4:
                 name += secrets.choice(t)+ " "
     
-    if pick == "OGFNAF*":
-        name += "Five Nights at "
+    if pick == "SNAST*":
+        name += "Scary Nights at "
         name += secrets.choice(s) + " "
         if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 7:
             name += secrets.choice(number)

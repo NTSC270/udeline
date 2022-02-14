@@ -1,7 +1,5 @@
-import commands, requests
-from dotenv import load_dotenv
-import os, syntax_highlight, badge_parse
-import datetime
+import commands
+import badge_parse
 
 async def run_command(discord, message, args, client, opt):
     args.pop(0)

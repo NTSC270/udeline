@@ -7,8 +7,8 @@ async def run_command(discord, message, args, client, opt):
 
     f = ["Five", "Scary", "Those", "Nine", "One", "Some", "1 Minute", "Horror"]
     n = ["Nights", "Nights", "Days", "Minutes", "Weeks"]
-    a = ["in", "at", "with"]
-    s = ["Freddy's", "Sebi TV's", "Rachael's", "CoolingTool's", "Baldi's", "Chuck E. Cheese's", "Scaries", "Scraps", "Mr. Hippo's", "Impostor", "Goomie's"]
+    a = ["at", "in", "with"]
+    s = ["Sebi TV's", "Freddy's", "Rachael's", "CoolingTool's", "Baldi's", "Chuck E. Cheese's", "Scaries", "Scraps", "Mr. Hippo's", "Impostor", "Goomie's"]
     
     number = ["Reignited", "2", "REMASTERED", "REMADE", "3", "4", "5", "Again", "FAN MADE"]
     t = [": Sebi's Wrath", ": The trilogy", ": Rewired", " (CANCELLED)", ": Brother Location", " (WIP)", " REUPLOADED"]

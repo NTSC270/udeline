@@ -3,7 +3,7 @@ import helpers.db as db
 
 async def run_command(discord, message, args, client, opt):
 
-    g = ["FNAF*", "UCN*", "NAME*", "SOMEONE'S_SOMETHING*", "RETURN*"]
+    g = ["FNAF*", "UCN*", "NAME*", "SOMEONE'S_SOMETHING*", "RETURN*", "OGFNAF*"]
 
     f = ["Five", "Scary", "Those", "Nine", "One", "Some", "1 Minute", "Horror"]
     n = ["Nights", "Nights", "Days", "Minutes", "Weeks"]
@@ -11,7 +11,7 @@ async def run_command(discord, message, args, client, opt):
     s = ["Freddy's", "Sebi TV's", "Rachael's", "CoolingTool's", "Baldi's", "Chuck E. Cheese's", "Scaries", "Scraps", "Mr. Hippo's", "Impostor", "Goomie's"]
     
     number = ["Reignited", "2", "REMASTERED", "REMADE", "3", "4", "5", "Again", "FAN MADE"]
-    t = [": Sebi's Wrath", ": The trilogy", ": Rewired", " (CANCELLED)", ": Brother Location", " (WIP)", "REUPLOADED"]
+    t = [": Sebi's Wrath", ": The trilogy", ": Rewired", " (CANCELLED)", ": Brother Location", " (WIP)", " REUPLOADED"]
 
     person = ["Sebi TV's", "Goodwill's", "Freddy's", "Mario's", "Lost", "", "Joe's", "Fred's", "Fredbear's"]
     thing = ["Fright", "Terror House", "Diner", "Universe", "WORLD", 'Family Diner', 'One']
@@ -29,10 +29,10 @@ async def run_command(discord, message, args, client, opt):
         fnafnames[name] = fnafnames[name] + 1
         db.dbwrite(fnafnames, "database/fnaf.json")
 
-        if "Scary Nights at Sebi TV's 2" in name:
+        if "Scary Nights at Sebi TV's 2" in name.strip():
             name = f"**{name}**"
 
-        await message.reply(f"{name} ({fnafnames[name]})")
+        await message.reply(f"{name.strip()} ({fnafnames[name]})")
 
     pick = secrets.choice(g)
     if pick == "FNAF*":
@@ -43,7 +43,7 @@ async def run_command(discord, message, args, client, opt):
         if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 7:
             name += secrets.choice(number)
             if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 4:
-                name += secrets.choice(t)
+                name += secrets.choice(t)+ " "
         return await complete_name_gen(name)
 
     if pick == "UCN*":
@@ -53,7 +53,7 @@ async def run_command(discord, message, args, client, opt):
         if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 7:
             name += secrets.choice(number)
             if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 4:
-                name += secrets.choice(t)
+                name += secrets.choice(t)+ " "
 
         return await complete_name_gen(name)
 
@@ -62,7 +62,7 @@ async def run_command(discord, message, args, client, opt):
         if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 7:
             name += secrets.choice(number)
             if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 4:
-                name += secrets.choice(t)
+                name += secrets.choice(t)+ " "
 
         return await complete_name_gen(name)
 
@@ -72,7 +72,7 @@ async def run_command(discord, message, args, client, opt):
         if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 7:
             name += secrets.choice(number)
             if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 4:
-                name += secrets.choice(t)
+                name += secrets.choice(t)+ " "
 
         return await complete_name_gen(name)
     
@@ -82,7 +82,15 @@ async def run_command(discord, message, args, client, opt):
         if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 7:
             name += secrets.choice(number)
             if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 4:
-                name += secrets.choice(t)
+                name += secrets.choice(t)+ " "
+    
+    if pick == "OGFNAF*":
+        name += "Five Nights at "
+        name += secrets.choice(s) + " "
+        if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 7:
+            name += secrets.choice(number)
+            if secrets.choice([0,1,2,3,4,5,6,7,8,9]) > 4:
+                name += secrets.choice(t)+ " "
 
         return await complete_name_gen(name)
 

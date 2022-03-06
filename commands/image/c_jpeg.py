@@ -27,4 +27,4 @@ async def run_command(discord, message, args, client, opt):
     with BytesIO() as image_binary:
         image.save(image_binary, 'JPEG', quality = int(amp))
         image_binary.seek(0)
-        await message.reply(file=discord.File(image_binary, "image.png"))
+        await message.reply(file=discord.File(image_binary, "image.jpg"))

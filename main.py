@@ -25,18 +25,18 @@ class MyClient(discord.Client):
             return
         if message.author.bot:
             return
-        if client.user in message.mentions:
-            if message.reference:
-                if message.content != "help":
-                    return
-            command = "help"
-            await commands.run_command(command, discord, message, [], client, [])
+        # if client.user in message.mentions:
+        #     if message.reference:
+        #         if message.content != "help":
+        #             return
+        #     command = "help"
+        #     await commands.run_command(command, discord, message, [], client, [])
         if helper.prefix.check(message.content, client)[0]:
 
             opt = option_parse.parse_options(message.content)
             for x in range(len(opt)):
-                if '--'+opt[x] in message.content:
-                    message.content = message.content.replace('--'+opt[x],"")
+                if '-'+opt[x] in message.content:
+                    message.content = message.content.replace('-'+opt[x],"")
             args = re.split(" +", message.content.strip())
 
             prefix_len = helper.prefix.check(message.content, client)[1]

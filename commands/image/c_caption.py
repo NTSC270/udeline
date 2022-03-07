@@ -88,18 +88,18 @@ async def run_command(discord, message, args, client, opt):
             offset = 0
             size = (frame.size[0],(len(textarray) * fnt.getsize("y")[1]))
 
-            textout = Image.new("RGBA", size, (255, 255, 255, 0))
-            textbg = Image.new("RGBA", size, color = 'white')
-            textbg2 = Image.new("RGBA", (size[0], size[1]+40), color = 'white')
+            textout = Image.new("RGBX", size, (255, 255, 255, 0))
+            textbg = Image.new("RGBX", size, color = 'white')
+            textbg2 = Image.new("RGBX", (size[0], size[1]+40), color = 'white')
             nd = ImageDraw.Draw(textout)
 
             for line in textarray:
                 nd.text((size[0]/2, offset), line, font=fnt, anchor="mt", fill="#000000")
                 offset += fnt.getsize("y")[1]
 
-            finalout = Image.new("RGBA", (frame.size[0], frame.size[1] + size[1] + 40), (255, 255, 255, 0))
+            finalout = Image.new("RGBX", (frame.size[0], frame.size[1] + size[1] + 40), (255, 255, 255, 0))
             
-            out = Image.new("RGBA", textbg.size, (255, 255, 255, 0))
+            out = Image.new("RGBX", textbg.size, (255, 255, 255, 0))
             
             textbg.paste(textout)
             textbg2.paste(textbg, (0,20))
@@ -110,6 +110,6 @@ async def run_command(discord, message, args, client, opt):
             frames.append(finalout)
             
         with BytesIO() as image_binary:
-            frames[0].save(image_binary, 'GIF', save_all=True, optimize=False, duration=0, loop=0, append_images=frames[1:])
+            frames[0].save(image_binary, 'GIF', save_all=True, optimize=True, duration=0, loop=0, append_images=frames[1:])
             image_binary.seek(0)
             await message.reply(file=discord.File(image_binary, "image.gif"))

@@ -30,6 +30,9 @@ async def run_command(discord, message, args, client, opt):
         if opt[x][0] == "radius":
             if math.isnan(float(opt[x][1])):
                 return await message.reply("\"radius\" option must be number")
+            if float(opt[x][1]) < 0 or float(opt[x][1]) > 1:
+                return await message.reply("\"radius\" option must be withing range of 0.0 - 1.0")
+            
             rad = float(re.sub("\n.*$", "", opt[x][1]))
 
 

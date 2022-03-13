@@ -150,5 +150,37 @@
         "caption get real",
         "image",
         ""
+    ],
+    "reg": [
+        "turns your text from this 123 to 🇹​🇴​ ​🇹​🇭​🇮​🇸​ ​1️⃣​2️⃣​3️⃣​",
+        "reg <text>",
+        "none",
+        "reg to this 123",
+        "fun",
+        ""
+    ],
+    "exec": [
+        "**exec**utes code",
+        "exec <code>",
+        "-m, -file",
+        "exec quit()",
+        "util",
+        "forbidden"
+    ],
+    "blur": [
+        "blurs an image\n**`(requires image attachment)`**",
+        "blur",
+        "-power",
+        "blur -power=15",
+        "image",
+        ""
+    ],
+    "bloom": [
+        "applies a bloom image effect to an image\n**`(requires image attachment)`**",
+        "bloom",
+        "-power, -radius",
+        "bloom -power=0.6 -radius=10",
+        "image",
+        ""
     ]
 }

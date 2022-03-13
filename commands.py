@@ -1,7 +1,7 @@
 import sys
 sys.path.append('commands')
 import fun.c_fnaf as c_fnaf, general.c_first as c_first, general.c_help as c_help, other.c_image as c_image, utility.c_copy as c_copy, fun.c_doodlebob as c_doodlebob, other.c_sort as c_sort, c_test, c_exec, general.c_ascii as c_ascii, utility.c_emojipack as c_emojipack, general.c_ping as c_ping, utility.c_purge as c_purge, utility.c_emoji as c_emoji, image.c_saturate as c_saturate, image.c_jpeg as c_jpeg
-import image.c_grayscale as c_grayscale, image.c_ifunny as c_ifunny, image.c_qr as c_qr, general.c_user as c_user, image.c_caption as c_caption
+import image.c_grayscale as c_grayscale, image.c_ifunny as c_ifunny, image.c_qr as c_qr, general.c_user as c_user, image.c_caption as c_caption, fun.c_reg as c_reg, image.c_blur as c_blur, image.c_bloom as c_bloom
 import db, json
 from os.path import exists
 
@@ -50,6 +50,12 @@ async def run_command(command, discord, message, args, client, opt):
         await c_user.run_command(discord, message, args, client, opt)
     if command == "caption":
         await c_caption.run_command(discord, message, args, client, opt)
+    if command == "reg":
+        await c_reg.run_command(discord, message, args, client, opt)
+    if command == "blur":
+        await c_blur.run_command(discord, message, args, client, opt)
+    if command == "bloom":
+        await c_bloom.run_command(discord, message, args, client, opt)
 
     activity_measure(message)
 

@@ -13,7 +13,8 @@ colors = {
     "washed_fill": "[b;44m",
     "discord_fill": "[b;45m",
     "whitefill": "[b;47m",
-    "clear": "[0;0m"
+    "clear": "[0;0m",
+    "underline": "[4;31m"
 }
 
 def getc(color, bold):

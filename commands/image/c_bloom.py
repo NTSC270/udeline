@@ -1,10 +1,12 @@
 
+import numpy
+
 
 from PIL import Image
-from PIL import ImageEnhance
+from PIL import ImageFilter
 from io import BytesIO
 import PIL, glob, os, math, re, commands
-
+from blend_modes import blending_functions
 import requests
 
 
@@ -17,13 +19,18 @@ async def run_command(discord, message, args, client, opt):
     if len(message.attachments) > 0:
         content = message.attachments[0]
 
-    amp = 10
+    rad = 10
+    power = 0.7
     for x in range(len(opt)):
         opt[x] = opt[x].split("=")
         if opt[x][0] == "power":
             if math.isnan(float(opt[x][1])):
                 return await message.reply("\"power\" option must be number")
-            amp = float(re.sub("\n.*$", "", opt[x][1]))
+            power = float(re.sub("\n.*$", "", opt[x][1]))
+        if opt[x][0] == "radius":
+            if math.isnan(float(opt[x][1])):
+                return await message.reply("\"radius\" option must be number")
+            rad = float(re.sub("\n.*$", "", opt[x][1]))
 
 
     if message.reference:
@@ -38,9 +45,21 @@ async def run_command(discord, message, args, client, opt):
             return await commands.run_command("help", discord, message, ["u>help", "saturate"], client, [])
 
     image = Image.open(BytesIO(await content.read()))
-    conv = ImageEnhance.Color(image)
-    img2 = conv.enhance(amp) 
+    image = image.convert(mode="RGBA")
+
+    img1 = numpy.array(image).astype(float)
+    img2 = image.filter(ImageFilter.GaussianBlur(radius=rad))
+    img2 = numpy.array(img2).astype(float)
+
+    mixed = blending_functions.addition(img1, img2, power*0.5)
+    mixed = blending_functions.addition(img1, img2, power*0.7)
+    mixed = blending_functions.addition(img1, img2, power*0.6)
+    mixed = blending_functions.addition(img1, img2, power)
+
+    out = numpy.uint8(mixed)
+    out = Image.fromarray(out)
+
     with BytesIO() as image_binary:
-        img2.save(image_binary, 'PNG')
+        out.save(image_binary, 'PNG')
         image_binary.seek(0)
         await message.reply(file=discord.File(image_binary, "image.png"))

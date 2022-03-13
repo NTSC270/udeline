@@ -5,17 +5,32 @@ from PIL import ImageEnhance
 from io import BytesIO
 import PIL, glob, os, math, re, commands
 
+import requests
 
 async def run_command(discord, message, args, client, opt): 
 
-    if len(message.attachments) < 1:
-        await message.reply("i need an image attachment to do that")
+    if len(message.attachments) < 1 and not message.reference:
+        await message.reply("i need an image to do that")
         return await commands.run_command("help", discord, message, ["u>help", "ifunny"], client, [])
 
-    content = message.attachments[0]
+    if len(message.attachments) > 0:
+        content = message.attachments[0]
+
     img = Image.open('image/resources/ifunny.jpg', 'r')
     img2 = Image.open('image/resources/ifunny_bar.jpg', 'r')
     img_w, img_h = img.size
+
+    if message.reference:
+        messageref = await message.channel.fetch_message(message.reference.message_id)
+        if messageref.attachments:
+            content = messageref.attachments[0]
+        if messageref.embeds:
+            response = requests.get(messageref.embeds[0].url)
+            content = response.content
+        if not messageref.attachments and not messageref.embeds:
+            await message.reply("i need an image attachment to do that and this message you're replying to doesn't have that")
+            return await commands.run_command("help", discord, message, ["u>help", "ifunny"], client, [])
+
     image = Image.open(BytesIO(await content.read()))
     bg_w, bg_h = image.size
     offset = ((bg_w - img_w), (bg_h - img_h))

@@ -1,14 +1,18 @@
-
-
 from math import ceil
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 from PIL import ImageSequence
 from io import BytesIO
-import requests
+import aiohttp
 import textwrap
 import commands
+
+from functools import partial
+from concurrent.futures import ThreadPoolExecutor
+import asyncio
+
+thread_pool = ThreadPoolExecutor()
 
 
 async def run_command(discord, message, args, client, opt): 
@@ -29,9 +33,9 @@ async def run_command(discord, message, args, client, opt):
             url = content.url
             content = Image.open(BytesIO(await content.read()))
         if messageref.embeds:
-            response = requests.get(messageref.embeds[0].url)
-            content = response.content
-            content = Image.open(BytesIO(response.content))
+            async with aiohttp.ClientSession() as session:
+                async with session.get(str(messageref.embeds[0].url)) as resp:
+                    content = Image.open(BytesIO(await resp.read()))
             url = messageref.embeds[0].url
         if not messageref.attachments and not messageref.embeds:
             await message.reply("i need an image attachment to do that and this message you're replying to doesn't have that")
@@ -48,16 +52,76 @@ async def run_command(discord, message, args, client, opt):
 
         image = content
 
-        fontscale = 11.25
+        await process_png(image, message,discord, args)
 
-        fnt = ImageFont.truetype("image/fonts/futura.otf", 2 + ceil(image.size[0] // fontscale))
+    
+    if url.endswith("gif"):
+        image = content
 
-        textarray = textwrap.wrap(" ".join(args), width=image.size[0]/fnt.getsize("a")[0])
+        loop = asyncio.get_running_loop()
+
+        await loop.run_in_executor(
+            thread_pool, 
+            partial(await process_gif(image, message, discord, args))
+        )
+
+async def process_png(image, message, discord, args):
+
+    fontscale = 11.25
+
+    fnt = ImageFont.truetype("image/fonts/futura.otf", 2 + ceil(image.size[0] // fontscale))
+
+    textarray = textwrap.wrap(" ".join(args), width=image.size[0]/fnt.getsize("a")[0])
+
+    offset = 0
+    size = (image.size[0],(len(textarray) * fnt.getsize("y")[1]))
+
+    textout = Image.new("RGBA", size, (255, 255, 255, 0))
+    textbg = Image.new("RGBA", size, color = 'white')
+    textbg2 = Image.new("RGBA", (size[0], size[1]+fnt.getsize("y")[1]), color = 'white')
+    nd = ImageDraw.Draw(textout)
+
+    for line in textarray:
+        nd.text((size[0]/2, offset), line, font=fnt, anchor="mt", fill="#000000")
+        offset += fnt.getsize("y")[1]
+
+    finalout = Image.new("RGBA", (image.size[0], image.size[1] + size[1] + fnt.getsize("y")[1]), (255, 255, 255, 0))
+    
+    out = Image.alpha_composite(textbg, textout)
+    textbg2.paste(out, (0,fnt.getsize("y")[1]//2))
+    out = textbg2
+    finalout.paste(image, (0, textbg.size[1]+fnt.getsize("y")[1]))
+    finalout.paste(out, (0,0))
+    
+    with BytesIO() as image_binary:
+        finalout.save(image_binary, 'PNG')
+        image_binary.seek(0)
+        await message.remove_reaction("⏱️", message.guild.me)
+        await message.reply(file=discord.File(image_binary, "image.png"))
+
+async def process_gif(image, message, discord, args):
+    frames = []
+    tempframes = []
+    duration = []
+
+    for frame in ImageSequence.Iterator(image):
+        tempframes.append(frame)
+    progmsg = await message.reply(f"processing, please wait...")
+
+    for frame in ImageSequence.Iterator(image):
+
+        duration.append(frame.info['duration'])
+
+        fontscale = 12.25
+
+        fnt = ImageFont.truetype("image/fonts/futura.otf", 2 + ceil(frame.size[0] // fontscale))
+
+        textarray = textwrap.wrap(" ".join(args), width=frame.size[0]/fnt.getsize("a")[0])
 
         offset = 0
-        size = (image.size[0],(len(textarray) * fnt.getsize("y")[1]))
+        size = (frame.size[0],(len(textarray) * fnt.getsize("y")[1]))
 
-        textout = Image.new("RGBA", size, (255, 255, 255, 0))
+        textout = Image.new("RGBX", size, (255, 255, 255, 0))
         textbg = Image.new("RGBA", size, color = 'white')
         textbg2 = Image.new("RGBA", (size[0], size[1]+fnt.getsize("y")[1]), color = 'white')
         nd = ImageDraw.Draw(textout)
@@ -66,69 +130,23 @@ async def run_command(discord, message, args, client, opt):
             nd.text((size[0]/2, offset), line, font=fnt, anchor="mt", fill="#000000")
             offset += fnt.getsize("y")[1]
 
-        finalout = Image.new("RGBA", (image.size[0], image.size[1] + size[1] + fnt.getsize("y")[1]), (255, 255, 255, 0))
+        finalout = Image.new("RGBA", (frame.size[0], frame.size[1] + size[1] + fnt.getsize("y")[1]), (255, 255, 255, 0))
         
-        out = Image.alpha_composite(textbg, textout)
-        textbg2.paste(out, (0,fnt.getsize("y")[1]//2))
-        out = textbg2
-        finalout.paste(image, (0, textbg.size[1]+fnt.getsize("y")[1]))
-        finalout.paste(out, (0,0))
+        textbg.paste(textout)
+        textbg2.paste(textbg, (0,fnt.getsize("y")[1]//2))
+        textbg = textbg2
+        frame.convert(mode='PA',
+            palette=Image.ADAPTIVE,
+            colors=256,
+            dither=1
+        )
+        finalout.paste(image, (0, textbg.size[1]))
+        finalout.paste(textbg, (0,0))
+            
+        frames.append(finalout)
         
-        with BytesIO() as image_binary:
-            finalout.save(image_binary, 'PNG')
-            image_binary.seek(0)
-            await message.remove_reaction("⏱️", message.guild.me)
-            await message.reply(file=discord.File(image_binary, "image.png"))
-    
-    if url.endswith("gif"):
-        progress = 0
-        image = content
-        frames = []
-        tempframes = []
-        for frame in ImageSequence.Iterator(image):
-            tempframes.append(frame)
-        progmsg = await message.reply(f"processing, please wait...")
-
-        for frame in ImageSequence.Iterator(image):
-            progress += 1
-
-            fontscale = 12.25
-
-            fnt = ImageFont.truetype("image/fonts/futura.otf", 2 + ceil(frame.size[0] // fontscale))
-
-            textarray = textwrap.wrap(" ".join(args), width=frame.size[0]/fnt.getsize("a")[0])
-
-            offset = 0
-            size = (frame.size[0],(len(textarray) * fnt.getsize("y")[1]))
-
-            textout = Image.new("RGBX", size, (255, 255, 255, 0))
-            textbg = Image.new("RGBA", size, color = 'white')
-            textbg2 = Image.new("RGBA", (size[0], size[1]+fnt.getsize("y")[1]), color = 'white')
-            nd = ImageDraw.Draw(textout)
-
-            for line in textarray:
-                nd.text((size[0]/2, offset), line, font=fnt, anchor="mt", fill="#000000")
-                offset += fnt.getsize("y")[1]
-
-            finalout = Image.new("RGBA", (frame.size[0], frame.size[1] + size[1] + fnt.getsize("y")[1]), (255, 255, 255, 0))
-            
-            out = Image.new("RGBA", textbg.size, (255, 255, 255, 0))
-            
-            textbg.paste(textout)
-            textbg2.paste(textbg, (0,fnt.getsize("y")[1]//2))
-            textbg = textbg2
-            frame.convert(mode='P',
-                palette=Image.ADAPTIVE,
-                colors=256,
-                dither=1
-            )
-            finalout.paste(image, (0, textbg.size[1]))
-            finalout.paste(textbg, (0,0))
-                
-            frames.append(finalout)
-            
-        with BytesIO() as image_binary:
-            frames[0].save(image_binary, 'GIF', save_all=True, optimize=False, duration=0, loop=0, append_images=frames[1:])
-            image_binary.seek(0)
-            await message.reply(file=discord.File(image_binary, "image.gif"))
-            await progmsg.delete()
+    with BytesIO() as image_binary:
+        frames[0].save(image_binary, 'GIF', save_all=True, optimize=False, duration=duration, loop=0, append_images=frames[1:])
+        image_binary.seek(0)
+        await message.reply(file=discord.File(image_binary, "image.gif"))
+        await progmsg.delete()

@@ -1,8 +1,8 @@
-import requests 
+import aiohttp 
 import zipfile
 from io import BytesIO
 import time, datetime
-import time_decorate, re
+import time_decorate
 
 async def run_command(discord, message, args, client, opt):
     start = time.time()
@@ -13,15 +13,15 @@ async def run_command(discord, message, args, client, opt):
     timings = []
 
     emojis = message.guild.emojis
-    emojidatas = []
-    usednames = []
 
-    for x in emojis:
-        tempstart = time.time()
-        r = requests.get(x.url, allow_redirects=True, stream=True)
-        zip_file.writestr(x.name + (".gif" if x.animated else ".png"), r.content)
-        temptime = time.time() - tempstart
-        timings.append(temptime)
+
+    async with aiohttp.ClientSession() as session:
+        for x in emojis:
+            tempstart = time.time()
+            async with session.get(str(x.url)) as resp:
+                zip_file.writestr(x.name + (".gif" if x.animated else ".png"), await resp.read())
+                temptime = time.time() - tempstart
+                timings.append(temptime)
 
     
     zip_file.close()

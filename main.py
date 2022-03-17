@@ -4,9 +4,9 @@ import time
 import os
 import sys
 from dotenv import load_dotenv
+load_dotenv()
 sys.path.append("replit-keep-alive/src")
 from replit_keep_alive import keep_alive
-load_dotenv()
 
 class MyClient(discord.Client):
     
@@ -38,12 +38,9 @@ class MyClient(discord.Client):
                 if '-'+opt[x] in message.content:
                     message.content = message.content.replace('-'+opt[x],"")
             args = re.split(" +", message.content.strip())
-
             prefix_len = helper.prefix.check(message.content, client)[1]
             command = args[0][prefix_len:]
             await commands.run_command(command, discord, message, args, client, opt)
-            args.pop(0)
-            option_parse.parse_options(" ".join(args))
 
 if os.getenv("REPLIT") == "True":
     keep_alive()

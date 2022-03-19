@@ -12,7 +12,7 @@ async def run_command(discord, message, args, client, opt):
 
     kind = "emoji"
 
-    if re.match(emoji_data_python.get_emoji_regex(), args[1]) == None:
+    if re.match(emoji_data_python.get_emoji_regex(), args[1].strip()) == None:
         kind = "maybe_discord"
 
     if kind == "emoji":

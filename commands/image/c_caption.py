@@ -90,11 +90,16 @@ async def run_command(discord, message, args, client, opt):
 
 async def process_png(image, message, discord, args):
 
-    fontscale = 11.25
+    fontscale = 11
 
     fnt = ImageFont.truetype("image/fonts/futura.otf", 2 + ceil(image.size[0] // fontscale))
 
-    textarray = textwrap.wrap(" ".join(args), break_long_words=True, width=image.size[0]/fnt.getsize("a")[0])
+    wordlist = " ".join(args).split(" ")
+    n = image.size[0]//fnt.getsize("a")[0]
+    for x in wordlist:
+        x = " ".join([x[i:i+n] for i in range(0, len(x), n)])
+
+    textarray = textwrap.wrap(" ".join(args), break_long_words=True, width=n)
 
     offset = 0
     size = (image.size[0],(len(textarray) * fnt.getsize("y")[1]))
@@ -134,14 +139,11 @@ async def process_gif(image, message, discord, args):
     for frame in ImageSequence.Iterator(image):
         duration.append(frame.info['duration'])
 
-        fontscale = 12.25
+        fontscale = 11
 
         fnt = ImageFont.truetype("image/fonts/futura.otf", 2 + ceil(frame.size[0] // fontscale))
 
-        wordlist = " ".join(args).split(" ")
         n = frame.size[0]//fnt.getsize("a")[0]
-        for x in wordlist:
-            x = " ".join([x[i:i+n] for i in range(0, len(x), n)])
 
         textarray = textwrap.wrap(" ".join(args), break_long_words=True, width=n)
 

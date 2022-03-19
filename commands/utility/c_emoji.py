@@ -3,7 +3,7 @@ import emoji
 import re
 import requests
 import io
-
+from PIL import Image
 
 async def run_command(discord, message, args, client, opt):
 
@@ -20,11 +20,13 @@ async def run_command(discord, message, args, client, opt):
         emojicode = emoji_data_python.char_to_unified(args[1])
         emojicldr = emoji.demojize(args[1])
         
-        r = requests.get("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/twitter/282/"+str(emojicldr.replace(":", "").replace("_", "-"))+"_"+str(emojicode).lower()+".png", allow_redirects=True, stream=True)
+        r = requests.get("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/twitter/322/"+str(emojicldr.replace(":", "").replace("_", "-"))+"_"+str(emojicode).lower()+".png", allow_redirects=True, stream=True)
 
         buf = io.BytesIO()
         buf.write(r.content)
         buf.seek(0)
+
+
 
         file=discord.File(buf, str(emojicldr.replace(":", "").replace("_", "-"))+".png")
 

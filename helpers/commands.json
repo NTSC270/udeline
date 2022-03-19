@@ -144,7 +144,7 @@
         "guildonly"
     ],
     "caption": [
-        "adds a caption to the gif\n**`(requires image or reply to message with image)`**",
+        "adds a caption to an image\n**`(requires image or reply to message with image)`**",
         "caption <text>",
         "none",
         "caption get real",
@@ -180,6 +180,14 @@
         "bloom",
         "-power, -radius",
         "bloom -power=0.6 -radius=10",
+        "image",
+        ""
+    ],
+    "motivate": [
+        "makes an image into a motivational poster\n**`(requires image attachment)`**",
+        "motivate top text, bottom text",
+        "none",
+        "motivate get real, just get real",
         "image",
         ""
     ]

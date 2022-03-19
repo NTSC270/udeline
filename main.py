@@ -15,9 +15,9 @@ class MyClient(discord.Client):
         client.starttime = time.time()
         if client.user.name == "udevline":
             client.devmode = True
-            await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name="to u,,help someone"))
+            await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name="to u=help someone"))
         else:
-            await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name="to u,help someone"))
+            await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name="to u-help someone"))
 
     async def on_message(self, message):
         # don't respond to ourselves

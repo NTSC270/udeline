@@ -15,76 +15,32 @@ load_dotenv()
 from functools import partial
 from concurrent.futures import ThreadPoolExecutor
 import asyncio
+from imageget import get_image
 
 thread_pool = ThreadPoolExecutor()
 
 
 async def run_command(discord, message, args, client, opt): 
     args.pop(0)
-    
-    if len(message.attachments) < 1 and not message.reference:
-        await message.reply("i need an image to do that")
-        return await commands.run_command("help", discord, message, ["u>help", "caption"], client, [])
-    if len(message.attachments) > 0:
-        content = message.attachments[0]
-        url = content.url
-        content = Image.open(BytesIO(await content.read()))
 
-    if message.reference:
-        messageref = await message.channel.fetch_message(message.reference.message_id)
-        if messageref.attachments:
-            content = messageref.attachments[0]
-            url = content.url
-            content = Image.open(BytesIO(await content.read()))
-
-        if messageref.embeds:
-            stinkytenormp4 = False
-            if "https://tenor.com/view/" in str(messageref.embeds[0].url):
-                stinkytenormp4 = True
-                async with aiohttp.ClientSession() as session:
-                    tenor_id = messageref.embeds[0].url.split("-").pop()
-                    tenorapikey = os.getenv("TENOR")
-                    async with session.get(f"https://g.tenor.com/v1/gifs?ids={tenor_id}&media_filter=minimal&limit=1&key={tenorapikey}") as resp:
-                        outurl = json.loads(await resp.read())["results"][0]["media"][0]["gif"]["url"]
-                        async with aiohttp.ClientSession() as session:
-                            async with session.get(str(outurl)) as resp:
-                                content = Image.open(BytesIO(await resp.read()))
-
-            if stinkytenormp4 == False:
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(str(messageref.embeds[0].url)) as resp:
-                        content = Image.open(BytesIO(await resp.read()))
-
-            url = messageref.embeds[0].url
-        if not messageref.attachments and not messageref.embeds:
-            await message.reply("i need an image attachment to do that and this message you're replying to doesn't have that")
-            return await commands.run_command("help", discord, message, ["u>help", "caption"], client, [])
+    image = await get_image(message=message,client=client)
+    url = image.url
 
     if len(args) < 1:
         await message.reply("i need some text to do that")
         return await commands.run_command("help", discord, message, ["u>help", "caption"], client, [])
 
-
     if url.endswith("png") or url.endswith("jpg") or url.endswith("jpeg"):
-
         await message.add_reaction("⏱️")
-
-        image = content
-
         await process_png(image, message,discord, args)
 
     else:
-        image = content
-
         loop = asyncio.get_running_loop()
-
         try:
-
             await loop.run_in_executor(
                 thread_pool, 
                 partial(await process_gif(image, message, discord, args))
             )
-
         except:
             pass
 
@@ -129,11 +85,8 @@ async def process_png(image, message, discord, args):
 
 async def process_gif(image, message, discord, args):
     frames = []
-    tempframes = []
     duration = []
-
-    for frame in ImageSequence.Iterator(image):
-        tempframes.append(frame)
+    
     progmsg = await message.reply(f"processing, please wait...")
 
     for frame in ImageSequence.Iterator(image):

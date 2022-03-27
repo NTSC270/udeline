@@ -1,5 +1,6 @@
 import commands
-import badge_parse
+from helper import badge_parse
+from userget import get_user 
 
 async def run_command(discord, message, args, client, opt):
     args.pop(0)
@@ -44,15 +45,11 @@ async def run_command(discord, message, args, client, opt):
 
     guild = False
 
-    try:
-        if message.guild is not None:
-            user = message.guild.get_member(int(args[0])) or await client.fetch_user(args[0])
-            if hasattr(user, "nick"):
-                guild = True
-        else:
-            user = await client.fetch_user(args[0])
-    except:
-        return await message.reply("this doesn't look like a valid user id")
+    user = await get_user(query=args[0],client=client,message=message)
+    if user is None:
+        return await message.reply("i can't find a user like that")
+    if hasattr(user, "nick"):
+        guild = True
 
     embed = discord.Embed()
 
@@ -77,7 +74,7 @@ async def run_command(discord, message, args, client, opt):
         roles_list.pop(0)
         embed.add_field(name="roles:", value = "@everyone" + "".join(roles_list))
         
-    out = badge_parse.parse(user)
+    out = badge_parse(user)
     icon = []
     for x in out:
         icon.append(badges_dict[x])

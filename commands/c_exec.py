@@ -5,6 +5,9 @@ from syntax_highlight import highlighting as style
 
 
 async def run_command(discord, message, args, client, opt):
+
+    if(message.author.id != 839035980371460107): return
+
     args.pop(0)
     code = " ".join(args)
 

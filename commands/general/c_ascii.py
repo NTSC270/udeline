@@ -1,5 +1,6 @@
 import pyfiglet as fig
-import math, markup_ansi, commands, re
+import commands, re
+from helper import ansi
 
 async def run_command(discord, message, args, client, opt):
     args.pop(0)
@@ -29,7 +30,7 @@ async def run_command(discord, message, args, client, opt):
 
     f = fig.Figlet(font=fontt.strip())
     if color != "clear":
-        output = markup_ansi.getc(color, "0")+f.renderText(" ".join(args)).replace("`", "\0`")
+        output = ansi(color, "0")+f.renderText(" ".join(args)).replace("`", "\0`")
         await message.reply((">>> ```ansi\n"+output[0:1981]+"```"))
     else:
         output = f.renderText(" ".join(args)).replace("`", "\0`")

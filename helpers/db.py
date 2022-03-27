@@ -5,8 +5,7 @@ def dbget(filename):
         datatemp = json.load(f)
         f.close() 
         return datatemp
-
-
+        
 def dbwrite(data, filename):
     with open(filename, 'w') as f:
         json.dump(data, f)

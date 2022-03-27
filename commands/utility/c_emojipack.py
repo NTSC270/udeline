@@ -2,7 +2,7 @@ import aiohttp
 import zipfile
 from io import BytesIO
 import time, datetime
-import time_decorate
+from helper import time_decorate
 
 async def run_command(discord, message, args, client, opt):
     start = time.time()
@@ -28,11 +28,11 @@ async def run_command(discord, message, args, client, opt):
     bytezip.seek(0)
 
     total = time.time() - start
-    total = time_decorate.letters(str(datetime.timedelta(seconds=total)), False)
+    total = time_decorate(str(datetime.timedelta(seconds=total)), False)
     average = 0
     for x in timings:
         average += x
     average = average / len(timings)
 
-    selfmsg = await message.reply("done! all emojis were packed into this file\n>>> time taken: **`"+total+"`**\naverage time per emoji: **`"+time_decorate.letters(str(datetime.timedelta(seconds=average)), False)+"`**", file=discord.File(bytezip, message.guild.name+"_emojis.zip"))
+    selfmsg = await message.reply("done! all emojis were packed into this file\n>>> time taken: **`"+total+"`**\naverage time per emoji: **`"+time_decorate(str(datetime.timedelta(seconds=average)), False)+"`**", file=discord.File(bytezip, message.guild.name+"_emojis.zip"))
     await message.remove_reaction("⏱️", selfmsg.author)

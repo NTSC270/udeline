@@ -4,7 +4,6 @@ def parse(member):
     badges = member.public_flags
     output = []
 
-
     if badges.bug_hunter:
         output.append("bug_hunter")
     if badges.bug_hunter_level_2:

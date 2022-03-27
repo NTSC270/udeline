@@ -1,5 +1,5 @@
 import re
-from types import new_class
+
 options = []
 
 def parse_options(string):

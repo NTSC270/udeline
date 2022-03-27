@@ -1,8 +1,7 @@
 import commands
 
 async def run_command(discord, message, args, client, opt):
-
-
+    
     if len(args) < 1 and not message.reference:
         await message.reply("i need some text to do that")
         return await commands.run_command("reg", discord, message, ["u>help", "ascii"], client, [])

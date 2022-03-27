@@ -1,8 +1,6 @@
-import discord, commands, re, helpers.helper as helper, option_parse
-import re
-import time
-import os
-import sys
+import discord, commands, re, option_parse
+import re, time, os, sys
+import helper
 from dotenv import load_dotenv
 load_dotenv()
 sys.path.append("replit-keep-alive/src")
@@ -20,17 +18,10 @@ class MyClient(discord.Client):
             await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name="to u-help someone"))
 
     async def on_message(self, message):
-        # don't respond to ourselves
         if message.author == self.user:
             return
         if message.author.bot:
             return
-        # if client.user in message.mentions:
-        #     if message.reference:
-        #         if message.content != "help":
-        #             return
-        #     command = "help"
-        #     await commands.run_command(command, discord, message, [], client, [])
         if helper.prefix.check(message.content, client)[0]:
 
             opt = option_parse.parse_options(message.content)

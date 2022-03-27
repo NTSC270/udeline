@@ -4,19 +4,12 @@ from PIL import Image
 from PIL import ImageEnhance
 from io import BytesIO
 import PIL, glob, os, math, re, commands
-import requests
+from imageget import get_image
 
 
 async def run_command(discord, message, args, client, opt): 
 
-    if len(message.attachments) < 1 and not message.reference:
-        await message.reply("i need an image to do that")
-        return await commands.run_command("help", discord, message, ["u>help", "jpeg"], client, [])
-
-    if len(message.attachments) > 0:
-        content = message.attachments[0]
-
-    amp = 5
+    amp = 2
     for x in range(len(opt)):
         opt[x] = opt[x].split("=")
         if opt[x][0] == "quality":
@@ -24,18 +17,11 @@ async def run_command(discord, message, args, client, opt):
                 return await message.reply("\"power\" option must be number")
             amp = float(re.sub("\n.*$", "", opt[x][1]))
 
-    if message.reference:
-        messageref = await message.channel.fetch_message(message.reference.message_id)
-        if messageref.attachments:
-            content = messageref.attachments[0]
-        if messageref.embeds:
-            response = requests.get(messageref.embeds[0].url)
-            content = response.content
-        if not messageref.attachments and not messageref.embeds:
-            await message.reply("i need an image attachment to do that and this message you're replying to doesn't have that")
-            return await commands.run_command("help", discord, message, ["u>help", "jpeg"], client, [])
+    image = await get_image(message=message,client=client)
+    if image is None:
+        await message.reply("i need an image to do that")
+        return await commands.run_command("help", discord, message, ["u>help", "saturate"], client, [])
 
-    image = Image.open(BytesIO(await content.read()))
     image = image.convert('RGB')
     with BytesIO() as image_binary:
         image.save(image_binary, 'JPEG', quality = int(amp))

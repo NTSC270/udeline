@@ -88,7 +88,7 @@
         ""
     ],
     "saturate": [
-        "saturates an image\n**`(requires image attachment)`**",
+        "saturates an image\n**`(requires image or reply to message with image)`**",
         "saturate",
         "-power",
         "saturate -power=10",
@@ -96,7 +96,7 @@
         ""
     ],
     "jpeg": [
-        "makes image look all compressed and jpeg-y\n**`(requires image attachment)`**",
+        "makes image look all compressed and jpeg-y\n**`(requires image or reply to message with image)`**",
         "jpeg",
         "-quality",
         "jpeg -quality=0",
@@ -104,7 +104,7 @@
         ""
     ],
     "ifunny": [
-        "adds ifunny.co watermark to image\n**`(requires image attachment)`**",
+        "adds ifunny.co watermark to image\n**`(requires image or reply to message with image)`**",
         "ifunny",
         "none",
         "ifunny",
@@ -112,7 +112,7 @@
         ""
     ],
     "grayscale": [
-        "makes image colorless\n**`(requires image attachment)`**",
+        "makes image colorless\n**`(requires image or reply to message with image)`**",
         "grayscale",
         "none",
         "grayscale",
@@ -168,7 +168,7 @@
         "forbidden"
     ],
     "blur": [
-        "blurs an image\n**`(requires image attachment)`**",
+        "blurs an image\n**`(requires image or reply to message with image)`**",
         "blur",
         "-power",
         "blur -power=15",
@@ -176,7 +176,7 @@
         ""
     ],
     "bloom": [
-        "applies a bloom image effect to an image\n**`(requires image attachment)`**",
+        "applies a bloom image effect to an image\n**`(requires image or reply to message with image)`**",
         "bloom",
         "-power, -radius",
         "bloom -power=0.6 -radius=10",
@@ -184,11 +184,27 @@
         ""
     ],
     "motivate": [
-        "makes an image into a motivational poster\n**`(requires image attachment)`**",
+        "makes an image into a motivational poster\n**`(requires image or reply to message with image)`**",
         "motivate top text, bottom text",
         "none",
         "motivate get real, just get real",
         "image",
+        ""
+    ],
+    "caption2": [
+        "adds a caption to the bottom of an image\n**`(requires image or reply to message with image)`**",
+        "caption2 <text>",
+        "none",
+        "caption2 give this guy a medal",
+        "image",
+        ""
+    ],
+    "copypasta": [
+        "All salmon should be 🛏 frozen for 🦊 30 days or 👹 cooked 🍪 thoroughly and 🐼 cooled to 🇹🇬 body temperature before being rolled 📜 into 🏸 a 😀 quid 🦑",
+        "copypasta <text>",
+        "none",
+        "copypasta I  can travel,  I  can eat ️ good  food, I  can see  new people, ‍‍‍ I  can smile,  I  can make memories  that I  dreamed  of having, I  can laugh,  I  can support ️my  family ‍‍ and my  friends, I  can learn  about the world, ️ and I  can give back to everyone because  of you. I  do owe people ‍‍ shit.  I  owe a lot.",
+        "fun",
         ""
     ]
 }

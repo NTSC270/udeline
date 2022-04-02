@@ -1,3 +1,4 @@
+from dis import dis
 import discord, commands, re, option_parse
 import re, time, os, sys
 import helper
@@ -7,7 +8,7 @@ sys.path.append("replit-keep-alive/src")
 from replit_keep_alive import keep_alive
 
 class MyClient(discord.Client):
-    
+
     async def on_ready(self):
         print('Logged on as', self.user)
         client.starttime = time.time()

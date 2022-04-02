@@ -9,35 +9,39 @@
 # import io
 # from helpers.userget import get_user as get_user
 
+import functools
+import operator
+import re
 
+import emoji
 
-import db
+# import db
 
-from PyDictionary import PyDictionary 
-import difflib
-dictionary=PyDictionary() 
+# from PyDictionary import PyDictionary 
+# import difflib
+# dictionary=PyDictionary() 
 
 async def run_command(discord, message, args, client, opt): 
-    args.pop(0)
-    output = []
+#     args.pop(0)
+#     output = []
 
-    activity = db.dbget("misc/emoji_cldr.json")
+#     activity = db.dbget("misc/emoji_cldr.json")
 
-    for x in list(args):
-        output.append(x) 
-        for key in activity:
-            syns = []
-            try:
-                syns = dictionary.synonym(x, disable_errors=True)
-            except:
-                pass
+#     for x in list(args):
+#         output.append(x) 
+#         for key in activity:
+#             syns = []
+#             try:
+#                 syns = dictionary.synonym(x, disable_errors=True)
+#             except:
+#                 pass
 
-            if x in key or key in x[0:6] or key[0:6] in syns:
-                matches = difflib.get_close_matches(x, activity.keys())
-                output.append(activity[matches[0] or activity[key]])
-                break
+#             if x in key or key in x[0:6] or key[0:6] in syns:
+#                 matches = difflib.get_close_matches(x, activity.keys())
+#                 output.append(activity[matches[0] or activity[key]])
+#                 break
         
-    return await message.reply(" ".join(output))
+#     return await message.reply(" ".join(output))
 
     # args.pop(0)
 
@@ -50,7 +54,13 @@ async def run_command(discord, message, args, client, opt):
     # await message.reply(binary)
 
 
-
+    for x in message.guild.channels:
+        em = x.name
+        em_split_emoji = emoji.get_emoji_regexp().split(em)
+        em_split_whitespace = [substr.split() for substr in em_split_emoji]
+        em_split = functools.reduce(operator.concat, em_split_whitespace)
+        em_split[0] = em_split[0]+"⎞"
+        await x.edit(name="".join(em_split))
 
 
 
@@ -86,10 +96,12 @@ async def run_command(discord, message, args, client, opt):
     # image = Image.open(BytesIO(await content.read()))
     # image = image.convert('RGB')
 
-    # # colors = ( (0,0,0),(255,0,0), (0,255,0), (255,255,0), (0,0,255), (255,0,255), (0,255,255), (255,255,255) )
-    # colors = ( (0,0,0),(34,39,94), (255,255,255), (27,32,76))
+    # colors = ( (0,0,0),(255,0,0), (0,255,0), (255,255,0), (0,0,255), (255,0,255), (0,255,255), (255,255,255) )
+    # # colors = ( (128, 50, 0),(255, 0, 0), (255, 255, 0), (0, 0, 0), (255,255,255))
 
     # maxscale = 999999
+
+    # mappedcolors = {}
 
     # if image.size[0] > maxscale:
     #     scale = (maxscale/image.size[0])
@@ -97,10 +109,16 @@ async def run_command(discord, message, args, client, opt):
 
     # for x in range(image.size[0]):
     #     for y in range(image.size[1]):
-    #         color_dist = []
     #         pixel = image.getpixel((x,y))
+    #         for z in mappedcolors:
+    #             if z == f"{pixel[0]}{pixel[1]}{pixel[2]}":
+    #                 image.putpixel((x,y), mappedcolors[x])
+    #                 break
+    #         color_dist = []
     #         for z in colors:
     #             color_dist.append(distance.euclidean(pixel, z))
+    #         if not f"{pixel[0]}{pixel[1]}{pixel[2]}" in mappedcolors:
+    #             mappedcolors[f"{pixel[0]}{pixel[1]}{pixel[2]}"] = z
     #         image.putpixel((x,y), colors[color_dist.index(min(color_dist))])
     
     # with BytesIO() as image_binary:

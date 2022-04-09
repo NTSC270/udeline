@@ -12,7 +12,7 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged on as', self.user)
         client.starttime = time.time()
-        if client.user.name == "udevline":
+        if client.user.name == "ndeline":
             client.devmode = True
             await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name="to u=help someone"))
         else:

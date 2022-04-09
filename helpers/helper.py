@@ -1,6 +1,6 @@
 
-prefixes = {"udeline": ["u-", "u,", "u>", "[]"], "udevline": ["u=", "u,,", "u>>", "{}"]}
-udel_emoji = {"udeline": "<:udeline:937436511899627620>", "udevline": "<:udevline:940528057830211584>"}
+prefixes = {"udeline": ["u-", "u,", "u>", "[]"], "ndeline": ["u=", "u,,", "u>>", "{}"]}
+udel_emoji = {"udeline": "<:udeline:962373693579857971> ", "ndeline": "<:ndeline:962373693370155038>"}
 
 class prefix:
     def check(msg, client):

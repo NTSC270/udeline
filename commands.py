@@ -14,8 +14,7 @@ async def run_command(command, discord, message, args, client, opt):
         command_module = __import__(f"c_{command}", globals(), locals(), [], 0)
         await command_module.run_command(discord, message, args, client, opt)
     except Exception as e:
-        print(e)
-        pass
+        raise SystemExit(e)
 
     activity_measure(message)
 

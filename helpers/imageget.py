@@ -49,7 +49,7 @@ async def get_image(message=None,client=None):
 
     if user is not None:
         async with aiohttp.ClientSession() as session:
-            async with session.get(str(user.avatar_url)) as resp:
+            async with session.get(str(user.display_avatar.url)) as resp:
                 image = Image.open(BytesIO(await resp.read()))
-                image.url = user.avatar_url
+                image.url = user.display_avatar.url
                 return image

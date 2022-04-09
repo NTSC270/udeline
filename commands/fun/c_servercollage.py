@@ -15,7 +15,7 @@ async def run_command(discord, message, args, client, opt):
     imagehues = []
     for x in message.guild.members:
         async with aiohttp.ClientSession() as session:
-            async with session.get(str(x.avatar_url)) as resp:
+            async with session.get(str(x.display_avatar.url)) as resp:
                 image = Image.open(BytesIO(await resp.read()))
                 image = image.convert("RGBA")
                 image = image.resize((512,512))

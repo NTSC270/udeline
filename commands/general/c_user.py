@@ -59,7 +59,7 @@ async def run_command(discord, message, args, client, opt):
         nick = f"({user.nick})" if user.nick is not None else ""
         embed.set_author(name=f"{user.name}#{user.discriminator} {nick}", icon_url=activity_dict[str(user.raw_status)])
 
-    embed.set_thumbnail(url=user.avatar_url)
+    embed.set_thumbnail(url=user.display_avatar.url)
     embed.add_field(name="joined discord:", value=f"<t:{int(user.created_at.timestamp())}:F>")
 
     if guild:

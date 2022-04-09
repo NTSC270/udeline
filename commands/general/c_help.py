@@ -53,7 +53,7 @@ async def run_command(discord, message, args, client, opt):
             all_cmds.append(x)
 
     embed=discord.Embed(description="**prefixes: `"+" ".join(helper.prefixes[client.user.name])+"`**\nblue commands may only be available in guilds, or work differently outside guilds", color=0x00ccff)
-    embed.set_author(name=f"{client.user.name} help",icon_url=f"{client.user.avatar_url}")
+    embed.set_author(name=f"{client.user.name} help",icon_url=f"{client.user.display_avatar.url}")
     embed.add_field(name=f"general {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(general)+"```")
     embed.add_field(name=f"utility {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(utility)+"```")
     embed.add_field(name=f"fun {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(fun)+"```")

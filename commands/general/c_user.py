@@ -1,6 +1,7 @@
 import commands
 from helper import badge_parse
 from userget import get_user 
+import datetime
 
 async def run_command(discord, message, args, client, opt):
     args.pop(0)
@@ -18,6 +19,7 @@ async def run_command(discord, message, args, client, opt):
         "mobile": "https://cdn.discordapp.com/emojis/941045780125474907.webp?size=96&quality=lossless"
     }
 
+
     emoji_dict = {
         "blurple": "<:blurple:941060844047962142>",
         "grey": "<:gray:941063007063142450>",
@@ -26,6 +28,14 @@ async def run_command(discord, message, args, client, opt):
         "red": "<:red:941063007230885898>",
         "pink": "<:pink:941063007318970429>",
     }
+    default_avatar_index = [
+        "blurple",
+        "grey",
+        "green",
+        "orange",
+        "red",
+        "pink"
+    ]
 
     badges_dict = {
         "nitro": "<:Nitro:941286823957774357>",
@@ -42,6 +52,11 @@ async def run_command(discord, message, args, client, opt):
         "verified_bot": "<:Bot1:941270505397289022><:Bot2:941270505447645185>",
         "certified_moderator": "<:Mod:941828496504787004>"
     }
+
+    def split_def_url(url):
+        parts = url.split("/")
+        parts = parts[len(parts)-1].split(".")
+        return parts[0]
 
     guild = False
 
@@ -65,7 +80,9 @@ async def run_command(discord, message, args, client, opt):
     if guild:
         embed.add_field(name="joined server:", value=f"<t:{int(user.joined_at.timestamp())}:F>")
 
-    embed.add_field(name="default avatar color:", value=f"{user.default_avatar} {emoji_dict[str(user.default_avatar)]}")
+
+    def_avatar_name = split_def_url(user.default_avatar.url)
+    embed.add_field(name="default avatar color:", value=f"{default_avatar_index[int(def_avatar_name)]} {str(emoji_dict[default_avatar_index[int(def_avatar_name)]])}")
 
     if guild:
         roles_list = []
@@ -73,6 +90,7 @@ async def run_command(discord, message, args, client, opt):
             roles_list.append(f"<@&{x.id}>")
         roles_list.pop(0)
         embed.add_field(name="roles:", value = "@everyone" + "".join(roles_list))
+        embed.add_field(name="time out:", value = f"lasts for {user.communication_disabled_until.replace(tzinfo=None) - datetime.datetime.now()}" if user.timed_out else "no", inline=False) if guild else None
         
     out = badge_parse(user)
     icon = []

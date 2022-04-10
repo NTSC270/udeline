@@ -4,10 +4,13 @@ def parse(member):
     badges = member.public_flags
     output = []
 
+
     if badges.bug_hunter:
         output.append("bug_hunter")
     if badges.bug_hunter_level_2:
         output.append("bug_hunter_2")
+    if badges.discord_certified_moderator:
+        output.append("certified_moderator")
     if badges.early_supporter:
         output.append("early_supporter")
     if badges.early_verified_bot_developer:

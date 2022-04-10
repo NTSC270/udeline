@@ -1,7 +1,13 @@
 import sys
+
 sys.path.append('helpers')
-import helper, db, markup_ansi
-import datetime, markup_ansi
+import datetime
+import math
+from io import BytesIO
+import helper
+import db
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
+
 
 async def run_command(discord, message, args, client, opt):
     if len(args) > 1:
@@ -20,47 +26,68 @@ async def run_command(discord, message, args, client, opt):
             return await message.reply(embed=embed)
         else:
             return await message.reply("that command doesn't exist")
-    all_cmds = []
-    utility = []
-    fun = []
-    general = []
-    other = []
     image = []
+
+    command_categories = {
+        "utility": [],
+        "fun": [],
+        "general": [],
+        "other": [],
+        "image": []
+    }
 
     commands_descriptive = db.dbget("helpers/commands.json")
 
-    coloring = {"guildonly": markup_ansi.getc("blue", "1"),
-                "": "",
-                "forbidden": markup_ansi.getc("red", "1") + markup_ansi.getc("underline", "0")
-               }
     for x in commands_descriptive:
         if len(commands_descriptive[x]) > 4:
-            if commands_descriptive[x][4] == "util":
-                cmdname = coloring[commands_descriptive[x][5]] + x + "[0;0m"
-                utility.append(cmdname)
-            if commands_descriptive[x][4] == "fun":
-                cmdname = coloring[commands_descriptive[x][5]] + x + "[0;0m"
-                fun.append(cmdname)
-            if commands_descriptive[x][4] == "general":
-                cmdname = coloring[commands_descriptive[x][5]] + x + "[0;0m"
-                general.append(cmdname)
-            if commands_descriptive[x][4] == "other":
-                cmdname = coloring[commands_descriptive[x][5]] + x + "[0;0m"
-                other.append(cmdname)
-            if commands_descriptive[x][4] == "image":
-                cmdname = coloring[commands_descriptive[x][5]] + x + "[0;0m"
-                image.append(cmdname)
-            all_cmds.append(x)
+            if commands_descriptive[x][5] == "guildonly":
+                command_categories[commands_descriptive[x][4]].append("*"+x)
+            elif commands_descriptive[x][5] == "forbidden":
+                command_categories[commands_descriptive[x][4]].append("&"+x)
+            else:
+                command_categories[commands_descriptive[x][4]].append(x)
+
+    image = Image.open(f"image/resources/{client.user.name}.png")
+    image = image.filter(ImageFilter.GaussianBlur(radius=0))
+
+    fontscale = 32
+    smallfontscale = 20
+
+    draw = ImageDraw.Draw(image)
+    categoryfont = ImageFont.truetype("image/fonts/whitrabt.ttf", fontscale)
+    font = ImageFont.truetype("image/fonts/whitrabt.ttf", smallfontscale)
+
+    categories = ["general", "utility", "other", "image", "fun"]
+
+    size = len(categories)
+    radius = 235
+    multiply = 0.8
+
+    for x in range(size):
+        theta = ((math.pi*2) / size)
+        offsetx = 50
+        offsety = 50
+        angle = (theta * x)+4
+
+        draw.text(((image.size[0]/2)-offsetx + math.sin(angle) * radius, (image.size[1]/2)-offsety + math.cos(angle) * (radius*multiply)), categories[x] ,(255,255,255),font=categoryfont,stroke_width=2, stroke_fill="black")
+        for y in range(len(command_categories[categories[x]])):
+            if "*" in command_categories[categories[x]][y]:
+                draw.text(((image.size[0]/2)-offsetx + math.sin(angle) * radius, (image.size[1]/2)-offsety + math.cos(angle) * (radius*multiply)+fontscale+y*smallfontscale), command_categories[categories[x]][y].replace("*", "") ,(64,128,255),font=font,stroke_width=1, stroke_fill="black")
+            elif "&" in command_categories[categories[x]][y]:
+                draw.text(((image.size[0]/2)-offsetx + math.sin(angle) * radius, (image.size[1]/2)-offsety + math.cos(angle) * (radius*multiply)+fontscale+y*smallfontscale), command_categories[categories[x]][y].replace("&", "") ,(255,64,64),font=font,stroke_width=1, stroke_fill="black")
+            else:
+                draw.text(((image.size[0]/2)-offsetx + math.sin(angle) * radius, (image.size[1]/2)-offsety + math.cos(angle) * (radius*multiply)+fontscale+y*smallfontscale), command_categories[categories[x]][y] ,(255,255,255),font=font,stroke_width=1, stroke_fill="black")
 
     embed=discord.Embed(description="**prefixes: `"+" ".join(helper.prefixes[client.user.name])+"`**\nblue commands may only be available in guilds, or work differently outside guilds", color=0x00ccff)
     embed.set_author(name=f"{client.user.name} help",icon_url=f"{client.user.display_avatar.url}")
-    embed.add_field(name=f"general {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(general)+"```")
-    embed.add_field(name=f"utility {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(utility)+"```")
-    embed.add_field(name=f"fun {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(fun)+"```")
-    embed.add_field(name=f"other {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(other)+"```")
-    embed.add_field(name=f"image {helper.udel_emoji[client.user.name]}", value="```ansi\n"+", ".join(image)+"```")
-    
+
     funfacts = open('misc/fun_facts.txt').readlines()
     now = datetime.datetime.today()
     embed.set_footer(text="Did you know? "+funfacts[now.day % len(funfacts)])
-    await message.reply(embed=embed)
+
+    with BytesIO() as image_binary:
+        image.save(image_binary, 'PNG')
+        image_binary.seek(0)
+        file = discord.File(image_binary, filename="image.png")
+        embed.set_image(url="attachment://image.png")
+        await message.reply(file=file,embed=embed)

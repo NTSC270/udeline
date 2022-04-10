@@ -1,4 +1,3 @@
-from dis import dis
 import discord, commands, re, option_parse
 import re, time, os, sys
 import helper

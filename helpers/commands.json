@@ -20,7 +20,7 @@
         "emojipack",
         "none",
         "emojipack",
-        "util",
+        "utility",
         "guildonly"
     ],
     "first": [
@@ -60,7 +60,7 @@
         "copy <message_id>",
         "none",
         "copy 937612398926377020",
-        "util",
+        "utility",
         ""
     ],
     "sort": [
@@ -76,7 +76,7 @@
         "purge <number_of_messages>",
         "-member",
         "purge 99 -member=484568604382199808",
-        "util",
+        "utility",
         "guildonly"
     ],
     "emoji": [
@@ -84,7 +84,7 @@
         "emoji <emoji>",
         "-brand",
         "emoji 🙂",
-        "util",
+        "utility",
         ""
     ],
     "saturate": [
@@ -164,7 +164,7 @@
         "exec <code>",
         "-m, -file",
         "exec quit()",
-        "util",
+        "utility",
         "forbidden"
     ],
     "blur": [

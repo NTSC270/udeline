@@ -214,5 +214,13 @@
         "servercollage",
         "fun",
         ""
+    ],
+    "lcd": [
+        "add lcd effect to image\n**`(requires image or reply to message with image)`**",
+        "lcd",
+        "none",
+        "servercollage",
+        "image",
+        ""
     ]
 }

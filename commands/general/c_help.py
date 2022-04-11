@@ -67,12 +67,12 @@ async def run_command(discord, message, args, client, opt):
         theta = ((math.pi*2) / size)
         offsetx = 50
         offsety = 50
-        angle = (theta * x)+4
+        angle = (theta * x)+4.3
 
         draw.text(((image.size[0]/2)-offsetx + math.sin(angle) * radius, (image.size[1]/2)-offsety + math.cos(angle) * (radius*multiply)), categories[x] ,(255,255,255),font=categoryfont,stroke_width=2, stroke_fill="black")
         for y in range(len(command_categories[categories[x]])):
             if "*" in command_categories[categories[x]][y]:
-                draw.text(((image.size[0]/2)-offsetx + math.sin(angle) * radius, (image.size[1]/2)-offsety + math.cos(angle) * (radius*multiply)+fontscale+y*smallfontscale), command_categories[categories[x]][y].replace("*", "") ,(64,128,255),font=font,stroke_width=1, stroke_fill="black")
+                draw.text(((image.size[0]/2)-offsetx + math.sin(angle) * radius, (image.size[1]/2)-offsety + math.cos(angle) * (radius*multiply)+fontscale+y*smallfontscale), command_categories[categories[x]][y].replace("*", "") ,(128,200,255),font=font,stroke_width=1, stroke_fill="black")
             elif "&" in command_categories[categories[x]][y]:
                 draw.text(((image.size[0]/2)-offsetx + math.sin(angle) * radius, (image.size[1]/2)-offsety + math.cos(angle) * (radius*multiply)+fontscale+y*smallfontscale), command_categories[categories[x]][y].replace("&", "") ,(255,64,64),font=font,stroke_width=1, stroke_fill="black")
             else:

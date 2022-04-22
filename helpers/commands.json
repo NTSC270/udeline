@@ -137,7 +137,7 @@
     ],
     "user": [
         "gets user information",
-        "user <user_id>",
+        "user <user_id or user_name>",
         "none",
         "user 839035980371460107",
         "general",

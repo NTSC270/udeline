@@ -90,12 +90,15 @@ async def process_gif(image, message, discord, args):
     progmsg = await message.reply(f"processing, please wait...")
 
     for frame in ImageSequence.Iterator(image):
+
+        frame.convert(mode='RGBA',
+            palette=Image.ADAPTIVE
+        )
+        
         duration.append(frame.info['duration'])
 
         fontscale = 11
-
         fnt = ImageFont.truetype("image/fonts/futura.otf", 2 + ceil(frame.size[0] // fontscale))
-
         n = frame.size[0]//fnt.getsize("a")[0]
 
         textarray = textwrap.wrap(" ".join(args), break_long_words=True, width=n)
@@ -103,29 +106,35 @@ async def process_gif(image, message, discord, args):
         offset = 0
         size = (frame.size[0],(len(textarray) * fnt.getsize("y")[1]))
 
-        textout = Image.new("RGBX", size, (255, 255, 255, 0))
-        textbg = Image.new("RGBX", size, color = 'white')
-        textbg2 = Image.new("RGBX", (size[0], size[1]+fnt.getsize("y")[1]), color = 'white')
+        textout = Image.new("P", size, (255, 255, 255, 0))
+        textbg = Image.new("P", size, color = 'white')
+        textbg2 = Image.new("P", (size[0], size[1]+fnt.getsize("y")[1]), color = 'white')
         nd = ImageDraw.Draw(textout)
 
         for line in textarray:
             nd.text((size[0]/2, offset), line, font=fnt, anchor="mt", fill="#000000")
             offset += fnt.getsize("y")[1]
 
-        finalout = Image.new("RGBX", (frame.size[0], frame.size[1] + size[1] + fnt.getsize("y")[1]), (255, 255, 255, 0))
+        finalout = Image.new("RGBA", (frame.size[0], frame.size[1] + size[1] + fnt.getsize("y")[1]), (255, 255, 255, 0))
         
         textbg.paste(textout)
         textbg2.paste(textbg, (0,fnt.getsize("y")[1]//2))
         textbg = textbg2
-        frame.convert(mode='RGBX',
-            palette=Image.ADAPTIVE,
-            # colors=256,
-            # dither=1
+        
+        textbg.convert(mode='RGBA',
+            palette=Image.ADAPTIVE
         )
+
         finalout.paste(image, (0, textbg.size[1]))
         finalout.paste(textbg, (0,0))
+
+        finalout.convert(mode='P',
+            palette=Image.ADAPTIVE
+        )
             
         frames.append(finalout)
+
+    frames.pop(1)
         
     with BytesIO() as image_binary:
         frames[0].save(image_binary, 'GIF', save_all=True, optimize=False, duration=duration, loop=0, disposal=2, append_images=frames[1:])

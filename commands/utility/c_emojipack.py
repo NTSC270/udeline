@@ -5,6 +5,8 @@ import time, datetime
 from helper import time_decorate
 
 async def run_command(discord, message, args, client, opt):
+
+    if message.guild is None: return await message.reply("this command can only be run in a server")
     start = time.time()
     await message.add_reaction("⏱️")
     bytezip = BytesIO()
@@ -13,7 +15,6 @@ async def run_command(discord, message, args, client, opt):
     timings = []
 
     emojis = message.guild.emojis
-
 
     async with aiohttp.ClientSession() as session:
         for x in emojis:

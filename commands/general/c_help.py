@@ -78,7 +78,7 @@ async def run_command(discord, message, args, client, opt):
             else:
                 draw.text(((image.size[0]/2)-offsetx + math.sin(angle) * radius, (image.size[1]/2)-offsety + math.cos(angle) * (radius*multiply)+fontscale+y*smallfontscale), command_categories[categories[x]][y] ,(255,255,255),font=font,stroke_width=1, stroke_fill="black")
 
-    embed=discord.Embed(description="**prefixes: `"+" ".join(helper.prefixes[client.user.name])+"`**\nblue commands may only be available in guilds, or work differently outside guilds", color=0x00ccff)
+    embed=discord.Embed(description="**prefixes: `"+" ".join(helper.prefixes[client.user.name])+"`**\nblue commands may work only in servers", color=0x00ccff)
     embed.set_author(name=f"{client.user.name} help",icon_url=f"{client.user.display_avatar.url}")
 
     funfacts = open('misc/fun_facts.txt').readlines()

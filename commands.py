@@ -9,12 +9,16 @@ sys.path.append('commands/other')
 sys.path.append('commands/utility')
 
 async def run_command(command, discord, message, args, client, opt):
-    
+    command_module = None
     try:
         command_module = __import__(f"c_{command}", globals(), locals(), [], 0)
+    except Exception as e:
+        return
+
+    try:
         await command_module.run_command(discord, message, args, client, opt)
     except Exception as e:
-        raise SystemExit(e)
+        raise SystemError(e)
 
     activity_measure(message)
 

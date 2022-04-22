@@ -65,26 +65,39 @@
 #     embed.set_footer(text="Did you know? "+funfacts[now.day % len(funfacts)])
 #     await message.reply(embed=embed)
 
-import sys
-sys.path.append('helpers')
-import helper, db, markup_ansi
-import datetime, markup_ansi
-from imageget import get_image
-from PIL import Image
-from io import BytesIO
+from PIL import Image, ImageFont
+import text
 
 async def run_command(discord, message, args, client, opt):
-    
-    im = await get_image(message=message,client=client)          # open RGB image
-    cmyk= im.convert('CMYK').split()         # RGB contone RGB to CMYK contone
-    c = cmyk[0].convert('1').convert('L')    # and then halftone ('1') each plane
-    m = cmyk[1].convert('1').convert('L')    # ...and back to ('L') mode
-    y = cmyk[2].convert('1').convert('L')
-    k = cmyk[3].convert('1').convert('L')
+    image = Image.new("RGBA", size=(500,500),color="white")
 
-    new_cmyk = Image.merge('CMYK',[c,m,y,k]) # put together all 4 planes
-    new_cmyk = new_cmyk.convert("RGBA")
-    with BytesIO() as image_binary:
-        new_cmyk.save(image_binary, 'PNG')
-        image_binary.seek(0)
-        await message.reply(file=discord.File(image_binary, "image.png"))
+    font = ImageFont.truetype("image/fonts/sansserif.ttf", 48)
+
+    text.rend("hey there", (50,50), image, font, "black", False)
+
+    image.show()
+
+
+# import sys
+# sys.path.append('helpers')
+# import helper, db, markup_ansi
+# import datetime, markup_ansi
+# from imageget import get_image
+# from PIL import Image
+# from io import BytesIO
+
+# async def run_command(discord, message, args, client, opt):
+    
+#     im = await get_image(message=message,client=client)          # open RGB image
+#     cmyk= im.convert('CMYK').split()         # RGB contone RGB to CMYK contone
+#     c = cmyk[0].convert('1').convert('L')    # and then halftone ('1') each plane
+#     m = cmyk[1].convert('1').convert('L')    # ...and back to ('L') mode
+#     y = cmyk[2].convert('1').convert('L')
+#     k = cmyk[3].convert('1').convert('L')
+
+#     new_cmyk = Image.merge('CMYK',[c,m,y,k]) # put together all 4 planes
+#     new_cmyk = new_cmyk.convert("RGBA")
+#     with BytesIO() as image_binary:
+#         new_cmyk.save(image_binary, 'PNG')
+#         image_binary.seek(0)
+#         await message.reply(file=discord.File(image_binary, "image.png"))

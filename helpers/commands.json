@@ -141,7 +141,7 @@
         "none",
         "user 839035980371460107",
         "general",
-        "guildonly"
+        ""
     ],
     "caption": [
         "adds a caption to an image\n**`(requires image or reply to message with image)`**",
@@ -188,14 +188,6 @@
         "motivate top text, bottom text",
         "none",
         "motivate get real, just get real",
-        "image",
-        ""
-    ],
-    "caption2": [
-        "adds a caption to the bottom of an image\n**`(requires image or reply to message with image)`**",
-        "caption2 <text>",
-        "none",
-        "caption2 give this guy a medal",
         "image",
         ""
     ],

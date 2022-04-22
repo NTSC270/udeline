@@ -70,6 +70,7 @@ async def run_command(discord, message, args, client, opt):
 
     if not guild:
         embed.set_author(name=f"{user.name}#{user.discriminator}")
+        embed.set_footer(text="this command could provide more information if ran in a server inside with this user")
     else:
         nick = f"({user.nick})" if user.nick is not None else ""
         embed.set_author(name=f"{user.name}#{user.discriminator} {nick}", icon_url=activity_dict[str(user.raw_status)])

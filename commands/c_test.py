@@ -65,17 +65,17 @@
 #     embed.set_footer(text="Did you know? "+funfacts[now.day % len(funfacts)])
 #     await message.reply(embed=embed)
 
-from PIL import Image, ImageFont
-import text
+# from PIL import Image, ImageFont
+# import text
 
-async def run_command(discord, message, args, client, opt):
-    image = Image.new("RGBA", size=(500,500),color="white")
+# async def run_command(discord, message, args, client, opt):
+#     image = Image.new("RGBA", size=(500,500),color="white")
 
-    font = ImageFont.truetype("image/fonts/sansserif.ttf", 48)
+#     font = ImageFont.truetype("image/fonts/sansserif.ttf", 48)
 
-    text.rend("hey there", (50,50), image, font, "black", False)
+#     text.rend("hey there", (50,50), image, font, "black", False)
 
-    image.show()
+#     image.show()
 
 
 # import sys

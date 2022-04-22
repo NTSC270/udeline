@@ -7,7 +7,7 @@ async def run_command(discord, message, args, client, opt):
     args.pop(0)
 
     if len(args) < 1:
-        await message.reply("i need a user id to do that")
+        await message.reply("i need a user id / name to do that")
         return await commands.run_command("help", discord, message, ["u>help", "user"], client, [])
 
     activity_dict = {

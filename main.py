@@ -13,9 +13,9 @@ class MyClient(discord.Client):
         client.starttime = time.time()
         if client.user.name == "ndeline":
             client.devmode = True
-            await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name="to u=help someone"))
+            await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name="to u,,help someone"))
         else:
-            await client.change_presence(activity=discord.Streaming(name="u-help for commands", url="https://www.twitch.tv/topgeartv"))
+            await client.change_presence(activity=discord.Streaming(name="u,help for commands", url="https://www.twitch.tv/topgeartv"))
 
     async def on_message(self, message):
         if message.author == self.user:

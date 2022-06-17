@@ -1,5 +1,5 @@
 
-prefixes = {"udeline": ["u-", "u,", "u>", "[]"], "ndeline": ["u=", "u,,", "u>>", "{}"]}
+prefixes = {"udeline": ["u,", "u>", "[]"], "ndeline": ["u,,", "u>>", "{}"]}
 udel_emoji = {"udeline": "<:udeline:962373693579857971> ", "ndeline": "<:ndeline:962373693370155038>"}
 
 class prefix:

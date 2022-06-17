@@ -1,9 +1,0 @@
-py-cord
-emoji-data-python
-emoji
-psutil
-pyfiglet
-pygments
-qrcode
-python-dotenv
-grequests
